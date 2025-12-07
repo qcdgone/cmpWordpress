@@ -24,7 +24,7 @@
   bottom: 16px;
   margin: 0 auto;
   max-width: 980px;
-  background: #fff;
+  background: var(--cmp410-surface, #fff);
   border-radius: 16px;
   box-shadow: 0 10px 30px rgba(0,0,0,.2);
   padding: 16px;
@@ -32,15 +32,16 @@
   gap: 16px;
   align-items: center;
   justify-content: space-between;
+  color: var(--cmp410-text, #111);
 }
 
 .cmp410-title { font-weight: 700; font-size: 16px; margin-bottom: 6px; }
-.cmp410-desc { font-size: 14px; line-height: 1.35; color: #333; }
+.cmp410-desc { font-size: 14px; line-height: 1.35; color: var(--cmp410-text, #333); opacity: .82; }
 .cmp410-link { color: #0b57d0; text-decoration: none; }
 .cmp410-link:hover { text-decoration: underline; }
 .cmp410-sep { margin: 0 6px; color: #888; }
 
-.cmp410-actions { display: flex; gap: 10px; flex-wrap: wrap; justify-content: flex-end; }
+.cmp410-actions { display: flex; gap: 10px; flex-wrap: nowrap; justify-content: flex-end; align-items: center; }
 
 .cmp410-btn {
   border: 0;
@@ -57,7 +58,7 @@
 }
 
 .cmp410-btn-outline { background: #fff; color: #111; border: 1px solid #ddd; }
-.cmp410-btn-ghost { background: #f5f5f5; color: #111; }
+.cmp410-btn-ghost { background: var(--cmp410-customize-bg, #f5f5f5); color: var(--cmp410-customize-fg, #111); }
 
 .cmp410-modal {
   position: absolute;
@@ -67,11 +68,12 @@
   transform: translateY(-50%);
   margin: 0 auto;
   max-width: 660px;
-  background: #fff;
+  background: var(--cmp410-surface, #fff);
   border-radius: 16px;
   box-shadow: 0 10px 30px rgba(0,0,0,.22);
   display: none;
   overflow: hidden;
+  color: var(--cmp410-text, #0b1621);
 }
 
 .cmp410-modal-header {
@@ -104,7 +106,7 @@
 .cmp410-row:last-child { border-bottom: 0; }
 
 .cmp410-row-title { font-weight: 700; font-size: 14px; margin-bottom: 2px; }
-.cmp410-row-desc { font-size: 13px; color: #555; }
+.cmp410-row-desc { font-size: 13px; color: var(--cmp410-text, #555); opacity: .78; }
 
 .cmp410-toggle input[type="checkbox"] {
   width: 44px;
@@ -122,6 +124,6 @@
 /* Responsive */
 @media (max-width: 640px) {
   .cmp410-banner { flex-direction: column; align-items: stretch; }
-  .cmp410-actions { justify-content: stretch; }
+  .cmp410-actions { justify-content: stretch; flex-wrap: wrap; }
   .cmp410-btn { width: 100%; }
 }
