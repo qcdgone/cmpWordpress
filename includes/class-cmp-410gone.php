@@ -36,9 +36,6 @@ class CMP_410GONE {
       'gtm_id' => '',
       'consent_wait_for_update_ms' => 500,
 
-      'meta_pixel_id' => '',
-      'linkedin_partner_id' => '',
-
       'privacy_url' => '',
       'cookie_policy_url' => '',
       'banner_title' => __('🍪 Gestion des cookies', 'cmp-410gone'),
@@ -47,6 +44,10 @@ class CMP_410GONE {
       'btn_reject' => __('Refuser', 'cmp-410gone'),
       'btn_customize' => __('Personnaliser', 'cmp-410gone'),
       'btn_save' => __('Enregistrer', 'cmp-410gone'),
+      'modal_title' => __('Préférences', 'cmp-410gone'),
+      'modal_desc_essentials' => __('Nécessaires au fonctionnement du site (toujours actifs).', 'cmp-410gone'),
+      'modal_desc_analytics' => __('Mesure d’audience (ex. Google Analytics 4).', 'cmp-410gone'),
+      'modal_desc_retargeting' => __('Publicités personnalisées (gérées via GTM).', 'cmp-410gone'),
 
       'background_color' => '#ffffff',
       'text_color' => '#0b1621',
@@ -90,7 +91,7 @@ class CMP_410GONE {
   }
 
   public static function admin_menu() {
-    add_options_page(__('cmp — Réglages', 'cmp-410gone'), 'cmp', 'manage_options', 'cmp-410gone', [__CLASS__, 'settings_page']);
+    add_options_page(__('Consent Management — Réglages', 'cmp-410gone'), __('Consent Management', 'cmp-410gone'), 'manage_options', 'cmp-410gone', [__CLASS__, 'settings_page']);
   }
 
   public static function register_settings() {
@@ -115,13 +116,11 @@ class CMP_410GONE {
     add_settings_field('banner_title', __('Titre du bandeau', 'cmp-410gone'), [__CLASS__, 'field_banner_title'], 'cmp-410gone', 'cmp_410gone_labels');
     add_settings_field('banner_text', __('Texte du bandeau', 'cmp-410gone'), [__CLASS__, 'field_banner_text'], 'cmp-410gone', 'cmp_410gone_labels');
     add_settings_field('btn_labels', __('Libellés des boutons', 'cmp-410gone'), [__CLASS__, 'field_btn_labels'], 'cmp-410gone', 'cmp_410gone_labels');
+    add_settings_field('modal_labels', __('Libellés de la popin', 'cmp-410gone'), [__CLASS__, 'field_modal_labels'], 'cmp-410gone', 'cmp_410gone_labels');
 
     add_settings_section('cmp_410gone_tracking', __('Tracking & configuration', 'cmp-410gone'), [__CLASS__, 'section_tracking'], 'cmp-410gone');
     add_settings_field('gtm_id', 'GTM Container ID', [__CLASS__, 'field_gtm_id'], 'cmp-410gone', 'cmp_410gone_tracking');
     add_settings_field('consent_wait_for_update_ms', __('Consent wait_for_update (ms)', 'cmp-410gone'), [__CLASS__, 'field_wait'], 'cmp-410gone', 'cmp_410gone_tracking');
-    add_settings_field('meta_pixel_id', 'Meta Pixel ID', [__CLASS__, 'field_meta_pixel_id'], 'cmp-410gone', 'cmp_410gone_tracking');
-    add_settings_field('linkedin_partner_id', 'LinkedIn Partner ID', [__CLASS__, 'field_linkedin_partner_id'], 'cmp-410gone', 'cmp_410gone_tracking');
-
     add_settings_section('cmp_410gone_advanced', __('Avancé', 'cmp-410gone'), [__CLASS__, 'section_advanced'], 'cmp-410gone');
     add_settings_field('ttl_days', __('Durée de conservation du choix (jours)', 'cmp-410gone'), [__CLASS__, 'field_ttl_days'], 'cmp-410gone', 'cmp_410gone_advanced');
     add_settings_field('debug', __('Debug console', 'cmp-410gone'), [__CLASS__, 'field_debug'], 'cmp-410gone', 'cmp_410gone_advanced');
@@ -151,12 +150,6 @@ class CMP_410GONE {
     }
     $out['consent_wait_for_update_ms'] = $wait;
 
-    $mp = isset($in['meta_pixel_id']) ? preg_replace('/[^0-9]/', '', (string)$in['meta_pixel_id']) : '';
-    $out['meta_pixel_id'] = $mp;
-
-    $li = isset($in['linkedin_partner_id']) ? preg_replace('/[^0-9]/', '', (string)$in['linkedin_partner_id']) : '';
-    $out['linkedin_partner_id'] = $li;
-
     $out['privacy_url'] = isset($in['privacy_url']) ? esc_url_raw((string)$in['privacy_url']) : $d['privacy_url'];
     $out['cookie_policy_url'] = isset($in['cookie_policy_url']) ? esc_url_raw((string)$in['cookie_policy_url']) : $d['cookie_policy_url'];
 
@@ -167,6 +160,10 @@ class CMP_410GONE {
     $out['btn_reject']    = isset($in['btn_reject']) ? sanitize_text_field((string)$in['btn_reject']) : $d['btn_reject'];
     $out['btn_customize'] = isset($in['btn_customize']) ? sanitize_text_field((string)$in['btn_customize']) : $d['btn_customize'];
     $out['btn_save']      = isset($in['btn_save']) ? sanitize_text_field((string)$in['btn_save']) : $d['btn_save'];
+    $out['modal_title']   = isset($in['modal_title']) ? sanitize_text_field((string)$in['modal_title']) : $d['modal_title'];
+    $out['modal_desc_essentials']  = isset($in['modal_desc_essentials']) ? sanitize_text_field((string)$in['modal_desc_essentials']) : $d['modal_desc_essentials'];
+    $out['modal_desc_analytics']   = isset($in['modal_desc_analytics']) ? sanitize_text_field((string)$in['modal_desc_analytics']) : $d['modal_desc_analytics'];
+    $out['modal_desc_retargeting'] = isset($in['modal_desc_retargeting']) ? sanitize_text_field((string)$in['modal_desc_retargeting']) : $d['modal_desc_retargeting'];
 
     $bg = isset($in['background_color']) ? trim((string)$in['background_color']) : $d['background_color'];
     if (!preg_match('/^#([A-Fa-f0-9]{6})$/', $bg)) {
@@ -226,7 +223,7 @@ class CMP_410GONE {
     $page = 'cmp-410gone';
     ?>
     <div class="wrap cmp410-admin">
-      <h1><?php esc_html_e('cmp — Réglages', 'cmp-410gone'); ?></h1>
+      <h1><?php esc_html_e('Consent Management — Réglages', 'cmp-410gone'); ?></h1>
       <p><a href="https://www.410-gone.fr" target="_blank" rel="noopener noreferrer">410gone</a></p>
 
       <style>
@@ -646,27 +643,27 @@ class CMP_410GONE {
 
     <div class="cmp410-modal-preview" aria-hidden="true">
       <div class="cmp410-modal-header">
-        <div class="cmp410-modal-title"><?php esc_html_e('Préférences', 'cmp-410gone'); ?></div>
+        <div class="cmp410-modal-title" data-preview-bind="modal_title"><?php echo esc_html($settings['modal_title']); ?></div>
         <span aria-hidden="true">×</span>
       </div>
       <div class="cmp410-row">
         <div>
           <div class="cmp410-row-title"><?php esc_html_e('Essentiels', 'cmp-410gone'); ?></div>
-          <div class="cmp410-row-desc"><?php esc_html_e('Toujours actifs', 'cmp-410gone'); ?></div>
+          <div class="cmp410-row-desc" data-preview-bind="modal_desc_essentials"><?php echo esc_html($settings['modal_desc_essentials']); ?></div>
         </div>
         <input type="checkbox" checked disabled />
       </div>
       <div class="cmp410-row">
         <div>
           <div class="cmp410-row-title"><?php esc_html_e('Analytics', 'cmp-410gone'); ?></div>
-          <div class="cmp410-row-desc"><?php esc_html_e('Mesure d’audience', 'cmp-410gone'); ?></div>
+          <div class="cmp410-row-desc" data-preview-bind="modal_desc_analytics"><?php echo esc_html($settings['modal_desc_analytics']); ?></div>
         </div>
         <input type="checkbox" checked />
       </div>
       <div class="cmp410-row">
         <div>
           <div class="cmp410-row-title"><?php esc_html_e('Retargeting', 'cmp-410gone'); ?></div>
-          <div class="cmp410-row-desc"><?php esc_html_e('Publicité personnalisée', 'cmp-410gone'); ?></div>
+          <div class="cmp410-row-desc" data-preview-bind="modal_desc_retargeting"><?php echo esc_html($settings['modal_desc_retargeting']); ?></div>
         </div>
         <input type="checkbox" />
       </div>
@@ -693,18 +690,6 @@ class CMP_410GONE {
     $s = self::get_settings(); ?>
     <input type="number" min="0" max="5000" name="<?php echo esc_attr(self::OPTION_KEY); ?>[consent_wait_for_update_ms]" value="<?php echo (int)$s['consent_wait_for_update_ms']; ?>" />
     <p class="description"><?php esc_html_e('Passé à wait_for_update. Valeurs typiques : 300–800ms.', 'cmp-410gone'); ?></p>
-  <?php }
-
-  public static function field_meta_pixel_id() {
-    $s = self::get_settings(); ?>
-    <input type="text" name="<?php echo esc_attr(self::OPTION_KEY); ?>[meta_pixel_id]" value="<?php echo esc_attr($s['meta_pixel_id']); ?>" placeholder="123456789012345" class="regular-text" />
-    <p class="description"><?php esc_html_e('Chargé uniquement si “Retargeting” est activé.', 'cmp-410gone'); ?></p>
-  <?php }
-
-  public static function field_linkedin_partner_id() {
-    $s = self::get_settings(); ?>
-    <input type="text" name="<?php echo esc_attr(self::OPTION_KEY); ?>[linkedin_partner_id]" value="<?php echo esc_attr($s['linkedin_partner_id']); ?>" placeholder="1234567" class="regular-text" />
-    <p class="description"><?php esc_html_e('Chargé uniquement si “Retargeting” est activé.', 'cmp-410gone'); ?></p>
   <?php }
 
   public static function field_privacy_url() {
@@ -745,6 +730,28 @@ class CMP_410GONE {
       <div>
         <label><?php esc_html_e('Enregistrer', 'cmp-410gone'); ?></label><br/>
         <input type="text" name="<?php echo esc_attr(self::OPTION_KEY); ?>[btn_save]" value="<?php echo esc_attr($s['btn_save']); ?>" class="regular-text" data-preview-bind="btn_save" />
+      </div>
+    </div>
+  <?php }
+
+  public static function field_modal_labels() {
+    $s = self::get_settings(); ?>
+    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; max-width:820px;">
+      <div>
+        <label><?php esc_html_e('Titre de la popin', 'cmp-410gone'); ?></label><br/>
+        <input type="text" name="<?php echo esc_attr(self::OPTION_KEY); ?>[modal_title]" value="<?php echo esc_attr($s['modal_title']); ?>" class="regular-text" data-preview-bind="modal_title" />
+      </div>
+      <div>
+        <label><?php esc_html_e('Sous-titre Essentiels', 'cmp-410gone'); ?></label><br/>
+        <input type="text" name="<?php echo esc_attr(self::OPTION_KEY); ?>[modal_desc_essentials]" value="<?php echo esc_attr($s['modal_desc_essentials']); ?>" class="regular-text" data-preview-bind="modal_desc_essentials" />
+      </div>
+      <div>
+        <label><?php esc_html_e('Sous-titre Analytics', 'cmp-410gone'); ?></label><br/>
+        <input type="text" name="<?php echo esc_attr(self::OPTION_KEY); ?>[modal_desc_analytics]" value="<?php echo esc_attr($s['modal_desc_analytics']); ?>" class="regular-text" data-preview-bind="modal_desc_analytics" />
+      </div>
+      <div>
+        <label><?php esc_html_e('Sous-titre Retargeting', 'cmp-410gone'); ?></label><br/>
+        <input type="text" name="<?php echo esc_attr(self::OPTION_KEY); ?>[modal_desc_retargeting]" value="<?php echo esc_attr($s['modal_desc_retargeting']); ?>" class="regular-text" data-preview-bind="modal_desc_retargeting" />
       </div>
     </div>
   <?php }
@@ -842,8 +849,6 @@ class CMP_410GONE {
       'ttlDays' => (int)$s['ttl_days'],
       'privacyUrl' => (string)$s['privacy_url'],
       'cookiePolicyUrl' => (string)$s['cookie_policy_url'],
-      'metaPixelId' => (string)$s['meta_pixel_id'],
-      'linkedinPartnerId' => (string)$s['linkedin_partner_id'],
       'debug' => (bool)$s['debug'],
       'forceShow' => (bool)$s['force_show'],
     ]);
@@ -851,9 +856,6 @@ class CMP_410GONE {
 
   public static function output_consent_default_and_gtm() {
     $s = self::get_settings();
-    if (!(int)$s['enable']) {
-      return;
-    }
     ?>
     <!-- cmp (410gone) — Consent Mode v2 default -->
     <script>
@@ -869,6 +871,10 @@ class CMP_410GONE {
       });
     </script>
     <?php
+    if (!(int)$s['enable']) {
+      return;
+    }
+
     if (!empty($s['gtm_id'])):
       $gtm_id = esc_js($s['gtm_id']);
       ?>
@@ -925,7 +931,7 @@ class CMP_410GONE {
 
       <div class="cmp410-modal" role="dialog" aria-modal="true" aria-label="<?php esc_attr_e('Préférences cookies', 'cmp-410gone'); ?>">
         <div class="cmp410-modal-header">
-          <div class="cmp410-modal-title"><?php esc_html_e('Préférences', 'cmp-410gone'); ?></div>
+          <div class="cmp410-modal-title"><?php echo esc_html($s['modal_title']); ?></div>
           <button class="cmp410-x" data-cmp410="close" aria-label="<?php esc_attr_e('Fermer', 'cmp-410gone'); ?>">×</button>
         </div>
 
@@ -933,7 +939,7 @@ class CMP_410GONE {
           <div class="cmp410-row">
             <div class="cmp410-row-text">
               <div class="cmp410-row-title"><?php esc_html_e('Essentiels', 'cmp-410gone'); ?></div>
-              <div class="cmp410-row-desc"><?php esc_html_e('Nécessaires au fonctionnement du site (toujours actifs).', 'cmp-410gone'); ?></div>
+              <div class="cmp410-row-desc"><?php echo esc_html($s['modal_desc_essentials']); ?></div>
             </div>
             <div class="cmp410-toggle">
               <input type="checkbox" checked disabled />
@@ -943,7 +949,7 @@ class CMP_410GONE {
           <div class="cmp410-row">
             <div class="cmp410-row-text">
               <div class="cmp410-row-title"><?php esc_html_e('Analytics', 'cmp-410gone'); ?></div>
-              <div class="cmp410-row-desc"><?php esc_html_e('Mesure d’audience (ex. Google Analytics 4).', 'cmp-410gone'); ?></div>
+              <div class="cmp410-row-desc"><?php echo esc_html($s['modal_desc_analytics']); ?></div>
             </div>
             <div class="cmp410-toggle">
               <input type="checkbox" id="cmp410-analytics" checked />
@@ -953,7 +959,7 @@ class CMP_410GONE {
           <div class="cmp410-row">
             <div class="cmp410-row-text">
               <div class="cmp410-row-title"><?php esc_html_e('Retargeting', 'cmp-410gone'); ?></div>
-              <div class="cmp410-row-desc"><?php esc_html_e('Publicités personnalisées (Google Ads, Meta, LinkedIn…).', 'cmp-410gone'); ?></div>
+              <div class="cmp410-row-desc"><?php echo esc_html($s['modal_desc_retargeting']); ?></div>
             </div>
             <div class="cmp410-toggle">
               <input type="checkbox" id="cmp410-retargeting" checked />
@@ -990,6 +996,10 @@ class CMP_410GONE {
       'btn_reject',
       'btn_customize',
       'btn_save',
+      'modal_title',
+      'modal_desc_essentials',
+      'modal_desc_analytics',
+      'modal_desc_retargeting',
       'privacy_url',
       'cookie_policy_url',
     ];
@@ -1013,6 +1023,10 @@ class CMP_410GONE {
       'btn_reject' => __('Bouton refuser', 'cmp-410gone'),
       'btn_customize' => __('Bouton personnaliser', 'cmp-410gone'),
       'btn_save' => __('Bouton enregistrer', 'cmp-410gone'),
+      'modal_title' => __('Titre popin personnalisation', 'cmp-410gone'),
+      'modal_desc_essentials' => __('Sous-titre essentiels', 'cmp-410gone'),
+      'modal_desc_analytics' => __('Sous-titre analytics', 'cmp-410gone'),
+      'modal_desc_retargeting' => __('Sous-titre retargeting', 'cmp-410gone'),
       'privacy_url' => __('URL Politique de confidentialité', 'cmp-410gone'),
       'cookie_policy_url' => __('URL Politique cookies', 'cmp-410gone'),
     ];

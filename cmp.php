@@ -1,8 +1,8 @@
 <?php
 /**
- * Plugin Name: cmp
+ * Plugin Name: Consent Management
  * Plugin URI: https://www.410-gone.fr
- * Description: CMP locale (Accepter / Refuser / Personnaliser) avec Google Consent Mode v2 + GTM (Variante A2) et chargement conditionnel Meta/LinkedIn.
+ * Description: CMP locale (Accepter / Refuser / Personnaliser) avec Google Consent Mode v2 + GTM (Variante A2).
  * Version: 1.3.0
  * Author: 410gone
  * Author URI: https://www.410-gone.fr

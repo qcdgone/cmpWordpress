@@ -118,58 +118,8 @@
     log('consent update', { analyticsOn, retargetingOn });
   }
 
-  // Meta Pixel
-  function loadMetaPixel(pixelId) {
-    if (!pixelId) return;
-    if (window.fbq) return;
-
-    !(function(f,b,e,v,n,t,s){
-      if(f.fbq) return; n=f.fbq=function(){n.callMethod?
-      n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-      if(!f._fbq) f._fbq=n; n.push=n; n.loaded=!0; n.version='2.0';
-      n.queue=[]; t=b.createElement(e); t.async=!0;
-      t.src=v; s=b.getElementsByTagName(e)[0];
-      s.parentNode.insertBefore(t,s);
-    })(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');
-
-    window.fbq('init', pixelId);
-    window.fbq('track', 'PageView');
-    log('Meta loaded', pixelId);
-  }
-
-  // LinkedIn Insight
-  function loadLinkedIn(partnerId) {
-    if (!partnerId) return;
-
-    window._linkedin_partner_id = String(partnerId);
-    window._linkedin_data_partner_ids = window._linkedin_data_partner_ids || [];
-    if (!window._linkedin_data_partner_ids.includes(String(partnerId))) {
-      window._linkedin_data_partner_ids.push(String(partnerId));
-    }
-
-    (function(d){
-      if (d.getElementById('linkedin-insight')) return;
-      const s = d.createElement('script');
-      s.type = 'text/javascript';
-      s.async = true;
-      s.id = 'linkedin-insight';
-      s.src = 'https://snap.licdn.com/li.lms-analytics/insight.min.js';
-      const x = d.getElementsByTagName('script')[0];
-      x.parentNode.insertBefore(s, x);
-    })(document);
-
-    log('LinkedIn loaded', partnerId);
-  }
-
-  function applyRetargetingLoadIfNeeded(consent) {
-    if (!consent || !consent.retargeting) return;
-    loadMetaPixel(CFG.metaPixelId);
-    loadLinkedIn(CFG.linkedinPartnerId);
-  }
-
   function applyConsent(consent) {
     gtagConsentUpdate(!!consent.analytics, !!consent.retargeting);
-    applyRetargetingLoadIfNeeded(consent);
   }
 
   function syncUIFromConsent(consent) {
@@ -242,5 +192,5 @@
     hideAll();
   }
 
-  log('init ok', { existing, forceShow: force, metaPixelId: CFG.metaPixelId, linkedinPartnerId: CFG.linkedinPartnerId });
+  log('init ok', { existing, forceShow: force });
 })();
