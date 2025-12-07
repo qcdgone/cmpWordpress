@@ -221,6 +221,11 @@ class CMP_410GONE {
     }
 
     $page = 'cmp-410gone';
+
+    // Fallback in case hooks didn’t register sections (e.g., custom admin flows).
+    if (empty($GLOBALS['wp_settings_sections'][$page])) {
+      self::register_settings();
+    }
     ?>
     <div class="wrap cmp410-admin">
       <h1><?php esc_html_e('🍪 Consent Management — Réglages', 'cmp'); ?></h1>
