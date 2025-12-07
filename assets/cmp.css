@@ -124,6 +124,11 @@
 /* Responsive */
 @media (max-width: 640px) {
   .cmp410-banner { flex-direction: column; align-items: stretch; }
-  .cmp410-actions { justify-content: stretch; flex-wrap: wrap; }
-  .cmp410-btn { width: 100%; }
+  .cmp410-actions { justify-content: center; flex-wrap: wrap; }
+  .cmp410-btn {
+    flex: 1 1 calc(50% - 10px);
+    min-width: 140px;
+    width: auto;
+    text-align: center;
+  }
 }

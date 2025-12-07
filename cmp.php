@@ -7,7 +7,7 @@
  * Author: 410gone
  * Author URI: https://www.410-gone.fr
  * License: GPLv2 or later
- * Text Domain: cmp-410gone
+ * Text Domain: cmp
  * Domain Path: /languages
  */
 
