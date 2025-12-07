@@ -8,10 +8,9 @@ class CMP_410GONE {
   const OPTION_KEY = 'cmp_410gone_settings';
   const COOKIE_NAME = 'cmp_consent';
 
-  public static function init() {
-    add_action('plugins_loaded', [__CLASS__, 'load_textdomain']);
-    add_action('admin_menu', [__CLASS__, 'admin_menu']);
-    add_action('admin_init', [__CLASS__, 'register_settings']);
+    public static function init() {
+      add_action('admin_menu', [__CLASS__, 'admin_menu']);
+      add_action('admin_init', [__CLASS__, 'register_settings']);
     add_filter('plugin_action_links_' . plugin_basename(CMP_410GONE_PLUGIN_FILE), [__CLASS__, 'plugin_action_links']);
     add_filter('plugin_row_meta', [__CLASS__, 'filter_plugin_row_meta'], 10, 2);
 
@@ -23,10 +22,6 @@ class CMP_410GONE {
     add_action('wp_footer', [__CLASS__, 'render_banner_markup'], 30);
 
     add_shortcode('cmp_manage_cookies', [__CLASS__, 'shortcode_manage_cookies']);
-  }
-
-  public static function load_textdomain() {
-    load_plugin_textdomain('cmp', false, dirname(plugin_basename(CMP_410GONE_PLUGIN_FILE)) . '/languages');
   }
 
   public static function defaults() {
@@ -616,7 +611,7 @@ class CMP_410GONE {
       esc_attr($settings['text_color'])
     );
     ?>
-    <div class="cmp410-preview" data-preview-root style="<?php echo $style; ?>">
+      <div class="cmp410-preview" data-preview-root style="<?php echo esc_attr($style); ?>">
       <div class="cmp410-preview-grid">
         <div class="cmp410-preview-device">
           <div class="cmp410-preview-label"><?php esc_html_e('Aperçu desktop', 'cmp'); ?></div>
@@ -639,13 +634,13 @@ class CMP_410GONE {
       <div class="cmp410-title" data-preview-bind="banner_title"><?php echo esc_html($settings['banner_title']); ?></div>
       <div class="cmp410-desc">
         <span data-preview-bind="banner_text"><?php echo esc_html(wp_strip_all_tags($settings['banner_text'])); ?></span>
-        <?php if ($privacy): ?>
-          <a href="<?php echo $privacy; ?>" class="cmp410-link" target="_blank" rel="noopener noreferrer"><?php esc_html_e('Politique de confidentialité', 'cmp'); ?></a>
-        <?php endif; ?>
-        <?php if ($cookies): ?>
-          <span class="cmp410-sep">·</span>
-          <a href="<?php echo $cookies; ?>" class="cmp410-link" target="_blank" rel="noopener noreferrer"><?php esc_html_e('Politique cookies', 'cmp'); ?></a>
-        <?php endif; ?>
+          <?php if ($privacy): ?>
+            <a href="<?php echo esc_url($privacy); ?>" class="cmp410-link" target="_blank" rel="noopener noreferrer"><?php esc_html_e('Politique de confidentialité', 'cmp'); ?></a>
+          <?php endif; ?>
+          <?php if ($cookies): ?>
+            <span class="cmp410-sep">·</span>
+            <a href="<?php echo esc_url($cookies); ?>" class="cmp410-link" target="_blank" rel="noopener noreferrer"><?php esc_html_e('Politique cookies', 'cmp'); ?></a>
+          <?php endif; ?>
       </div>
 
       <div class="cmp410-actions">
@@ -898,7 +893,7 @@ class CMP_410GONE {
         var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';
         j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;
         f.parentNode.insertBefore(j,f);
-        })(window,document,'script','dataLayer','<?php echo $gtm_id; ?>');
+          })(window,document,'script','dataLayer','<?php echo esc_js($gtm_id); ?>');
       </script>
       <!-- End Google Tag Manager -->
       <?php
@@ -926,13 +921,13 @@ class CMP_410GONE {
           <div class="cmp410-title"><?php echo esc_html($s['banner_title']); ?></div>
           <div class="cmp410-desc">
             <?php echo wp_kses_post($s['banner_text']); ?>
-            <?php if ($privacy): ?>
-              <a href="<?php echo $privacy; ?>" class="cmp410-link" target="_blank" rel="noopener noreferrer"><?php esc_html_e('Politique de confidentialité', 'cmp'); ?></a>
-            <?php endif; ?>
-            <?php if ($cookies): ?>
-              <span class="cmp410-sep">·</span>
-              <a href="<?php echo $cookies; ?>" class="cmp410-link" target="_blank" rel="noopener noreferrer"><?php esc_html_e('Politique cookies', 'cmp'); ?></a>
-            <?php endif; ?>
+              <?php if ($privacy): ?>
+                <a href="<?php echo esc_url($privacy); ?>" class="cmp410-link" target="_blank" rel="noopener noreferrer"><?php esc_html_e('Politique de confidentialité', 'cmp'); ?></a>
+              <?php endif; ?>
+              <?php if ($cookies): ?>
+                <span class="cmp410-sep">·</span>
+                <a href="<?php echo esc_url($cookies); ?>" class="cmp410-link" target="_blank" rel="noopener noreferrer"><?php esc_html_e('Politique cookies', 'cmp'); ?></a>
+              <?php endif; ?>
           </div>
         </div>
 
