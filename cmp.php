@@ -5,7 +5,8 @@
  * Description: CMP locale (Accepter / Refuser / Personnaliser) avec Google Consent Mode v2 + GTM (Variante A2).
  * Version: 1.3.0
  * Author: 410gone
- * Author URI: https://www.linkedin.com/in/patrick-valibus-78b55229/
+ ls
+ *
  * License: GPLv2 or later
  * Text Domain: cmp
  * Domain Path: /languages
