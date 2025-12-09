@@ -17,6 +17,36 @@ class CMP_410GONE {
     ];
   }
 
+  private static function has_consent_cookie() {
+    if (empty($_COOKIE[self::COOKIE_NAME])) {
+      return false;
+    }
+
+    $raw = wp_unslash((string)$_COOKIE[self::COOKIE_NAME]);
+    $data = json_decode($raw, true);
+
+    if (!is_array($data)) {
+      return false;
+    }
+
+    $keys = array_keys(self::consent_mode_defaults());
+    foreach ($keys as $key) {
+      if (isset($data[$key]) && in_array($data[$key], ['granted', 'denied'], true)) {
+        return true;
+      }
+    }
+
+    if (isset($data['analytics']) && is_bool($data['analytics'])) {
+      return true;
+    }
+
+    if (isset($data['retargeting']) && is_bool($data['retargeting'])) {
+      return true;
+    }
+
+    return false;
+  }
+
   private static function consent_mode_from_cookie() {
     $defaults = self::consent_mode_defaults();
 
@@ -981,10 +1011,13 @@ class CMP_410GONE {
       return;
     }
 
+    $has_cookie = self::has_consent_cookie();
+    $aria_hidden = $has_cookie && !(int)$s['force_show'] ? 'true' : 'false';
+
     $privacy = !empty($s['privacy_url']) ? esc_url($s['privacy_url']) : '';
     $cookies = !empty($s['cookie_policy_url']) ? esc_url($s['cookie_policy_url']) : '';
     ?>
-    <div class="cmp410-wrap" id="cmp410" aria-hidden="false">
+    <div class="cmp410-wrap" id="cmp410" aria-hidden="<?php echo esc_attr($aria_hidden); ?>">
       <div class="cmp410-banner" role="dialog" aria-modal="true" aria-label="<?php esc_attr_e('Gestion des cookies', 'cmp'); ?>">
         <div class="cmp410-text">
           <div class="cmp410-title"><?php echo esc_html($s['banner_title']); ?></div>
