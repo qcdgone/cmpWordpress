@@ -19,6 +19,13 @@
   const $analytics = document.getElementById('cmp410-analytics');
   const $retargeting = document.getElementById('cmp410-retargeting');
 
+  const CONSENT_DEFAULT = {
+    analytics_storage: 'denied',
+    ad_storage: 'denied',
+    ad_user_data: 'denied',
+    ad_personalization: 'denied'
+  };
+
   function setCookie(name, value, days) {
     const d = new Date();
     d.setTime(d.getTime() + days * 24 * 60 * 60 * 1000);
@@ -41,27 +48,47 @@
     try { return JSON.parse(json); } catch (_) { return null; }
   }
 
+  function normalizeConsent(obj) {
+    if (!obj || typeof obj !== 'object') return { ...CONSENT_DEFAULT };
+
+    const out = { ...CONSENT_DEFAULT };
+    ['analytics_storage', 'ad_storage', 'ad_user_data', 'ad_personalization'].forEach((key) => {
+      if (obj[key] === 'granted' || obj[key] === 'denied') {
+        out[key] = obj[key];
+      }
+    });
+
+    if (typeof obj.analytics === 'boolean') {
+      out.analytics_storage = obj.analytics ? 'granted' : 'denied';
+    }
+
+    if (typeof obj.retargeting === 'boolean') {
+      const value = obj.retargeting ? 'granted' : 'denied';
+      out.ad_storage = value;
+      out.ad_user_data = value;
+      out.ad_personalization = value;
+    }
+
+    return out;
+  }
+
   function getConsent() {
     const raw = getCookie(COOKIE_NAME);
     if (!raw) return null;
     const obj = safeParse(raw);
     if (!obj || typeof obj !== 'object') return null;
     return {
-      v: 1,
-      essential: true,
-      analytics: !!obj.analytics,
-      retargeting: !!obj.retargeting,
-      ts: obj.ts || Date.now()
+      v: obj.v || 2,
+      ts: obj.ts || Date.now(),
+      ...normalizeConsent(obj)
     };
   }
 
   function setConsent(consent) {
     const payload = JSON.stringify({
-      v: 1,
-      essential: true,
-      analytics: !!consent.analytics,
-      retargeting: !!consent.retargeting,
-      ts: Date.now()
+      v: 2,
+      ts: Date.now(),
+      ...normalizeConsent(consent)
     });
     setCookie(COOKIE_NAME, payload, TTL_DAYS);
   }
@@ -95,61 +122,62 @@
     else showBanner();
   }
 
-  function gtagConsentUpdate(analyticsOn, retargetingOn) {
+  function gtagConsentUpdate(consent) {
+    const c = normalizeConsent(consent);
     window.dataLayer = window.dataLayer || [];
 
     if (typeof window.gtag === 'function') {
-      window.gtag('consent', 'update', {
-        analytics_storage: analyticsOn ? 'granted' : 'denied',
-        ad_storage: retargetingOn ? 'granted' : 'denied',
-        ad_user_data: retargetingOn ? 'granted' : 'denied',
-        ad_personalization: retargetingOn ? 'granted' : 'denied'
-      });
+      window.gtag('consent', 'update', c);
     } else {
       log('gtag not available (still ok), pushing event only');
     }
 
     window.dataLayer.push({
       event: 'cmp_consent_update',
-      cmp_analytics: !!analyticsOn,
-      cmp_retargeting: !!retargetingOn
+      cmp_analytics: c.analytics_storage === 'granted',
+      cmp_retargeting: c.ad_storage === 'granted'
     });
 
-    log('consent update', { analyticsOn, retargetingOn });
+    log('consent update', c);
   }
 
   function applyConsent(consent) {
-    gtagConsentUpdate(!!consent.analytics, !!consent.retargeting);
+    gtagConsentUpdate(consent || CONSENT_DEFAULT);
   }
 
   function syncUIFromConsent(consent) {
-  if (!consent) {
-    // Defaults UI: checked
-    $analytics.checked = true;
-    $retargeting.checked = true;
-    return;
+    const c = consent ? normalizeConsent(consent) : CONSENT_DEFAULT;
+    $analytics.checked = c.analytics_storage === 'granted';
+    $retargeting.checked = c.ad_storage === 'granted';
   }
-  $analytics.checked = !!consent.analytics;
-  $retargeting.checked = !!consent.retargeting;
-}
 
 
   function acceptAll() {
-    const consent = { essential: true, analytics: true, retargeting: true };
+    const consent = {
+      analytics_storage: 'granted',
+      ad_storage: 'granted',
+      ad_user_data: 'granted',
+      ad_personalization: 'granted'
+    };
     setConsent(consent);
     applyConsent(consent);
     hideAll();
   }
 
   function rejectAll() {
-    const consent = { essential: true, analytics: false, retargeting: false };
+    const consent = { ...CONSENT_DEFAULT };
     setConsent(consent);
     applyConsent(consent);
     hideAll();
   }
 
   function saveCustom() {
-    const consent = { essential: true, analytics: !!$analytics.checked, retargeting: !!$retargeting.checked };
+    const consent = {
+      analytics_storage: $analytics.checked ? 'granted' : 'denied',
+      ad_storage: $retargeting.checked ? 'granted' : 'denied',
+      ad_user_data: $retargeting.checked ? 'granted' : 'denied',
+      ad_personalization: $retargeting.checked ? 'granted' : 'denied'
+    };
     setConsent(consent);
     applyConsent(consent);
     hideAll();

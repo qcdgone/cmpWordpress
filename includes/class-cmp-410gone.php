@@ -8,6 +8,50 @@ class CMP_410GONE {
   const OPTION_KEY = 'cmp_410gone_settings';
   const COOKIE_NAME = 'cmp_consent';
 
+  private static function consent_mode_defaults() {
+    return [
+      'analytics_storage' => 'denied',
+      'ad_storage' => 'denied',
+      'ad_user_data' => 'denied',
+      'ad_personalization' => 'denied',
+    ];
+  }
+
+  private static function consent_mode_from_cookie() {
+    $defaults = self::consent_mode_defaults();
+
+    if (empty($_COOKIE[self::COOKIE_NAME])) {
+      return $defaults;
+    }
+
+    $raw = wp_unslash((string)$_COOKIE[self::COOKIE_NAME]);
+    $data = json_decode($raw, true);
+
+    if (!is_array($data)) {
+      return $defaults;
+    }
+
+    $consent = $defaults;
+    foreach ($defaults as $key => $value) {
+      if (isset($data[$key]) && in_array($data[$key], ['granted', 'denied'], true)) {
+        $consent[$key] = $data[$key];
+      }
+    }
+
+    if (isset($data['analytics']) && is_bool($data['analytics'])) {
+      $consent['analytics_storage'] = $data['analytics'] ? 'granted' : 'denied';
+    }
+
+    if (isset($data['retargeting']) && is_bool($data['retargeting'])) {
+      $value = $data['retargeting'] ? 'granted' : 'denied';
+      $consent['ad_storage'] = $value;
+      $consent['ad_user_data'] = $value;
+      $consent['ad_personalization'] = $value;
+    }
+
+    return $consent;
+  }
+
     public static function init() {
       add_action('admin_menu', [__CLASS__, 'admin_menu']);
       add_action('admin_init', [__CLASS__, 'register_settings']);
@@ -894,19 +938,61 @@ class CMP_410GONE {
 
   public static function output_consent_default_and_gtm() {
     $s = self::get_settings();
+    $consent_defaults = self::consent_mode_from_cookie();
+    $consent_defaults['wait_for_update'] = (int)$s['consent_wait_for_update_ms'];
     ?>
     <!-- cmp (410gone) — Consent Mode v2 default -->
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
 
-      gtag('consent', 'default', {
-        'analytics_storage': 'denied',
-        'ad_storage': 'denied',
-        'ad_user_data': 'denied',
-        'ad_personalization': 'denied',
-        'wait_for_update': <?php echo (int)$s['consent_wait_for_update_ms']; ?>
-      });
+      (function(){
+        const CONSENT_DEFAULT = <?php echo wp_json_encode($consent_defaults); ?>;
+        const COOKIE_NAME = '<?php echo esc_js(self::COOKIE_NAME); ?>=';
+
+        function normalize(obj) {
+          const base = Object.assign({}, CONSENT_DEFAULT);
+          if (!obj || typeof obj !== 'object') return base;
+
+          ['analytics_storage','ad_storage','ad_user_data','ad_personalization'].forEach(function(key){
+            if (obj[key] === 'granted' || obj[key] === 'denied') {
+              base[key] = obj[key];
+            }
+          });
+
+          if (typeof obj.analytics === 'boolean') {
+            base.analytics_storage = obj.analytics ? 'granted' : 'denied';
+          }
+
+          if (typeof obj.retargeting === 'boolean') {
+            var value = obj.retargeting ? 'granted' : 'denied';
+            base.ad_storage = value;
+            base.ad_user_data = value;
+            base.ad_personalization = value;
+          }
+
+          return base;
+        }
+
+        function parseCookie() {
+          var parts = document.cookie.split(';');
+          for (var i = 0; i < parts.length; i++) {
+            var c = parts[i].trim();
+            if (c.indexOf(COOKIE_NAME) === 0) {
+              var raw = decodeURIComponent(c.substring(COOKIE_NAME.length));
+              try {
+                var parsed = JSON.parse(raw);
+                return normalize(parsed);
+              } catch(e) {
+                return normalize(null);
+              }
+            }
+          }
+          return normalize(null);
+        }
+
+        gtag('consent', 'default', parseCookie());
+      })();
     </script>
     <?php
     if (!(int)$s['enable']) {
