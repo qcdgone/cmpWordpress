@@ -58,3 +58,5 @@ Consent Management propose une CMP légère avec bandeau d'information, popin de
 == Dépannage ==
 * En cas d'optimisation JS (ex. WP Rocket), excluez `cmp.js`/`cmp-410gone` du « Delay JavaScript execution », puis purgez le cache.
 * Activez le mode debug pour suivre le flux de consentement dans la console.
+
+Plus d'informations sur [tutoriel sur le site de 410 gone](https://www.410-gone.fr/blog/plugin-cmp-wordpress-gratuit-consent-mode-v2-gtm.html)
