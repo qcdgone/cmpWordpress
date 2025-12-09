@@ -297,10 +297,35 @@ class CMP_410GONE {
           min-width: 0;
         }
 
+        .cmp410-preview-frame {
+          max-width: 100%;
+          overflow: hidden;
+          display: flex;
+          justify-content: center;
+        }
+
         .cmp410-preview-device.is-mobile {
           width: clamp(320px, 90vw, 430px);
           max-width: 100%;
           margin: 0 auto;
+        }
+
+        .cmp410-preview-inner {
+          display: flex;
+          flex-direction: column;
+          gap: 12px;
+          align-items: center;
+          width: 100%;
+        }
+
+        .cmp410-preview-surface {
+          max-width: min(760px, 100%);
+          width: auto;
+        }
+
+        .cmp410-preview-device.is-mobile .cmp410-preview-surface {
+          max-width: min(430px, 100%);
+          width: auto;
         }
 
         .cmp410-preview-label {
@@ -317,8 +342,7 @@ class CMP_410GONE {
           --cmp410-surface-border: #dfe6ee;
           --cmp410-text: var(--cmp410-foreground, #0b1621);
           --cmp410-secondary: color-mix(in srgb, var(--cmp410-foreground, #0b1621) 70%, #8b96a4);
-          width: 100%;
-          max-width: 760px;
+          max-width: 100%;
           margin: 0 auto;
           border-radius: 12px;
           background: var(--cmp410-surface);
@@ -361,8 +385,9 @@ class CMP_410GONE {
         }
 
         .cmp410-preview-device.is-mobile .cmp410-banner-preview .cmp410-actions .cmp410-btn {
-          flex: 1 1 calc(50% - 8px);
-          min-width: 140px;
+          flex: 1 1 100%;
+          min-width: 0;
+          width: 100%;
           text-align: center;
         }
 
@@ -630,55 +655,59 @@ class CMP_410GONE {
     $privacy = !empty($settings['privacy_url']) ? esc_url($settings['privacy_url']) : '';
     $cookies = !empty($settings['cookie_policy_url']) ? esc_url($settings['cookie_policy_url']) : '';
     ?>
-    <div class="cmp410-banner-preview" aria-hidden="true">
-      <div class="cmp410-title" data-preview-bind="banner_title"><?php echo esc_html($settings['banner_title']); ?></div>
-      <div class="cmp410-desc">
-        <span data-preview-bind="banner_text"><?php echo esc_html(wp_strip_all_tags($settings['banner_text'])); ?></span>
-          <?php if ($privacy): ?>
-            <a href="<?php echo esc_url($privacy); ?>" class="cmp410-link" target="_blank" rel="noopener noreferrer"><?php esc_html_e('Politique de confidentialité', 'cmp'); ?></a>
-          <?php endif; ?>
-          <?php if ($cookies): ?>
-            <span class="cmp410-sep">·</span>
-            <a href="<?php echo esc_url($cookies); ?>" class="cmp410-link" target="_blank" rel="noopener noreferrer"><?php esc_html_e('Politique cookies', 'cmp'); ?></a>
-          <?php endif; ?>
-      </div>
+    <div class="cmp410-preview-frame">
+      <div class="cmp410-preview-inner">
+        <div class="cmp410-preview-surface cmp410-banner-preview" aria-hidden="true">
+          <div class="cmp410-title" data-preview-bind="banner_title"><?php echo esc_html($settings['banner_title']); ?></div>
+          <div class="cmp410-desc">
+            <span data-preview-bind="banner_text"><?php echo esc_html(wp_strip_all_tags($settings['banner_text'])); ?></span>
+              <?php if ($privacy): ?>
+                <a href="<?php echo esc_url($privacy); ?>" class="cmp410-link" target="_blank" rel="noopener noreferrer"><?php esc_html_e('Politique de confidentialité', 'cmp'); ?></a>
+              <?php endif; ?>
+              <?php if ($cookies): ?>
+                <span class="cmp410-sep">·</span>
+                <a href="<?php echo esc_url($cookies); ?>" class="cmp410-link" target="_blank" rel="noopener noreferrer"><?php esc_html_e('Politique cookies', 'cmp'); ?></a>
+              <?php endif; ?>
+          </div>
 
-      <div class="cmp410-actions">
-        <button type="button" class="cmp410-btn cmp410-btn-ghost" data-preview="customize_btn_color"><span data-preview-bind="btn_customize"><?php echo esc_html($settings['btn_customize']); ?></span></button>
-        <button type="button" class="cmp410-btn cmp410-btn-outline"><span data-preview-bind="btn_reject"><?php echo esc_html($settings['btn_reject']); ?></span></button>
-        <button type="button" class="cmp410-btn cmp410-btn-primary" data-preview="accept_btn_color"><span data-preview-bind="btn_accept"><?php echo esc_html($settings['btn_accept']); ?></span></button>
-      </div>
-    </div>
+          <div class="cmp410-actions">
+            <button type="button" class="cmp410-btn cmp410-btn-ghost" data-preview="customize_btn_color"><span data-preview-bind="btn_customize"><?php echo esc_html($settings['btn_customize']); ?></span></button>
+            <button type="button" class="cmp410-btn cmp410-btn-outline"><span data-preview-bind="btn_reject"><?php echo esc_html($settings['btn_reject']); ?></span></button>
+            <button type="button" class="cmp410-btn cmp410-btn-primary" data-preview="accept_btn_color"><span data-preview-bind="btn_accept"><?php echo esc_html($settings['btn_accept']); ?></span></button>
+          </div>
+        </div>
 
-    <div class="cmp410-modal-preview" aria-hidden="true">
-      <div class="cmp410-modal-header">
-        <div class="cmp410-modal-title" data-preview-bind="modal_title"><?php echo esc_html($settings['modal_title']); ?></div>
-        <span aria-hidden="true">×</span>
-      </div>
-      <div class="cmp410-row">
-        <div>
-          <div class="cmp410-row-title"><?php esc_html_e('Essentiels', 'cmp'); ?></div>
-          <div class="cmp410-row-desc" data-preview-bind="modal_desc_essentials"><?php echo esc_html($settings['modal_desc_essentials']); ?></div>
+        <div class="cmp410-preview-surface cmp410-modal-preview" aria-hidden="true">
+          <div class="cmp410-modal-header">
+            <div class="cmp410-modal-title" data-preview-bind="modal_title"><?php echo esc_html($settings['modal_title']); ?></div>
+            <span aria-hidden="true">×</span>
+          </div>
+          <div class="cmp410-row">
+            <div>
+              <div class="cmp410-row-title"><?php esc_html_e('Essentiels', 'cmp'); ?></div>
+              <div class="cmp410-row-desc" data-preview-bind="modal_desc_essentials"><?php echo esc_html($settings['modal_desc_essentials']); ?></div>
+            </div>
+            <input type="checkbox" checked disabled />
+          </div>
+          <div class="cmp410-row">
+            <div>
+              <div class="cmp410-row-title"><?php esc_html_e('Analytics', 'cmp'); ?></div>
+              <div class="cmp410-row-desc" data-preview-bind="modal_desc_analytics"><?php echo esc_html($settings['modal_desc_analytics']); ?></div>
+            </div>
+            <input type="checkbox" checked />
+          </div>
+          <div class="cmp410-row">
+            <div>
+              <div class="cmp410-row-title"><?php esc_html_e('Retargeting', 'cmp'); ?></div>
+              <div class="cmp410-row-desc" data-preview-bind="modal_desc_retargeting"><?php echo esc_html($settings['modal_desc_retargeting']); ?></div>
+            </div>
+            <input type="checkbox" />
+          </div>
+          <div class="cmp410-actions-modal">
+            <button type="button" class="cmp410-btn cmp410-btn-outline"><span data-preview-bind="btn_reject"><?php echo esc_html($settings['btn_reject']); ?></span></button>
+            <button type="button" class="cmp410-btn cmp410-btn-primary" data-preview="accept_btn_color"><span data-preview-bind="btn_save"><?php echo esc_html($settings['btn_save']); ?></span></button>
+          </div>
         </div>
-        <input type="checkbox" checked disabled />
-      </div>
-      <div class="cmp410-row">
-        <div>
-          <div class="cmp410-row-title"><?php esc_html_e('Analytics', 'cmp'); ?></div>
-          <div class="cmp410-row-desc" data-preview-bind="modal_desc_analytics"><?php echo esc_html($settings['modal_desc_analytics']); ?></div>
-        </div>
-        <input type="checkbox" checked />
-      </div>
-      <div class="cmp410-row">
-        <div>
-          <div class="cmp410-row-title"><?php esc_html_e('Retargeting', 'cmp'); ?></div>
-          <div class="cmp410-row-desc" data-preview-bind="modal_desc_retargeting"><?php echo esc_html($settings['modal_desc_retargeting']); ?></div>
-        </div>
-        <input type="checkbox" />
-      </div>
-      <div class="cmp410-actions-modal">
-        <button type="button" class="cmp410-btn cmp410-btn-outline"><span data-preview-bind="btn_reject"><?php echo esc_html($settings['btn_reject']); ?></span></button>
-        <button type="button" class="cmp410-btn cmp410-btn-primary" data-preview="accept_btn_color"><span data-preview-bind="btn_save"><?php echo esc_html($settings['btn_save']); ?></span></button>
       </div>
     </div>
     <?php
