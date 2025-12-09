@@ -946,53 +946,7 @@ class CMP_410GONE {
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
 
-      (function(){
-        const CONSENT_DEFAULT = <?php echo wp_json_encode($consent_defaults); ?>;
-        const COOKIE_NAME = '<?php echo esc_js(self::COOKIE_NAME); ?>=';
-
-        function normalize(obj) {
-          const base = Object.assign({}, CONSENT_DEFAULT);
-          if (!obj || typeof obj !== 'object') return base;
-
-          ['analytics_storage','ad_storage','ad_user_data','ad_personalization'].forEach(function(key){
-            if (obj[key] === 'granted' || obj[key] === 'denied') {
-              base[key] = obj[key];
-            }
-          });
-
-          if (typeof obj.analytics === 'boolean') {
-            base.analytics_storage = obj.analytics ? 'granted' : 'denied';
-          }
-
-          if (typeof obj.retargeting === 'boolean') {
-            var value = obj.retargeting ? 'granted' : 'denied';
-            base.ad_storage = value;
-            base.ad_user_data = value;
-            base.ad_personalization = value;
-          }
-
-          return base;
-        }
-
-        function parseCookie() {
-          var parts = document.cookie.split(';');
-          for (var i = 0; i < parts.length; i++) {
-            var c = parts[i].trim();
-            if (c.indexOf(COOKIE_NAME) === 0) {
-              var raw = decodeURIComponent(c.substring(COOKIE_NAME.length));
-              try {
-                var parsed = JSON.parse(raw);
-                return normalize(parsed);
-              } catch(e) {
-                return normalize(null);
-              }
-            }
-          }
-          return normalize(null);
-        }
-
-        gtag('consent', 'default', parseCookie());
-      })();
+      gtag('consent', 'default', <?php echo wp_json_encode($consent_defaults); ?>);
     </script>
     <?php
     if (!(int)$s['enable']) {
