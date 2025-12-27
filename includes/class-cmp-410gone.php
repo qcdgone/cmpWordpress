@@ -313,8 +313,10 @@ class CMP410GONE_Manager {
     $base = plugin_dir_path(CMP410GONE_PLUGIN_FILE);
     $url  = plugin_dir_url(CMP410GONE_PLUGIN_FILE);
     $css_ver = file_exists($base . 'assets/admin.css') ? (string)filemtime($base . 'assets/admin.css') : '1.0.0';
+    $js_ver = file_exists($base . 'assets/admin.js') ? (string)filemtime($base . 'assets/admin.js') : '1.0.0';
 
     wp_enqueue_style(self::ADMIN_STYLE_HANDLE, $url . 'assets/admin.css', [], $css_ver);
+    wp_enqueue_script('cmp410gone-admin', $url . 'assets/admin.js', [], $js_ver, true);
   }
 
   public static function settings_page() {
