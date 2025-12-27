@@ -691,7 +691,7 @@ class CMP_410GONE {
   }
 
   public static function section_tracking() {
-    echo '<p><strong>' . esc_html__('Variante A2', 'cmp') . '</strong> : ' . esc_html__('GTM peut être chargé tôt, mais le Consent Mode v2 démarre en', 'cmp') . ' <code>denied</code> ' . esc_html__('puis se met à jour selon le choix utilisateur.', 'cmp') . '</p>';
+    echo '<p>' . esc_html__('GTM peut être chargé tôt, mais le Consent Mode v2 démarre en', 'cmp') . ' <code>denied</code> ' . esc_html__('puis se met à jour selon le choix utilisateur.', 'cmp') . '</p>';
     echo '<p><strong>WP Rocket</strong> : ' . esc_html__('exclure', 'cmp') . ' <code>cmp.js</code> ' . esc_html__('du “Delay JS execution”.', 'cmp') . '</p>';
   }
 
@@ -795,7 +795,7 @@ class CMP_410GONE {
   public static function field_gtm_id() {
     $s = self::get_settings(); ?>
     <input type="text" name="<?php echo esc_attr(self::OPTION_KEY); ?>[gtm_id]" value="<?php echo esc_attr($s['gtm_id']); ?>" placeholder="GTM-XXXXXXX" class="regular-text" />
-    <p class="description">A2 : <?php esc_html_e('GTM est chargé tôt (si renseigné). Dans GTM, configure tes tags pour exiger le consentement (analytics/ad).', 'cmp'); ?></p>
+    <p class="description"><?php esc_html_e('GTM est chargé tôt (si renseigné). Dans GTM, configure tes tags pour exiger le consentement (analytics/ad).', 'cmp'); ?></p>
   <?php }
 
   public static function field_wait() {
@@ -986,7 +986,7 @@ class CMP_410GONE {
     if (!empty($s['gtm_id'])):
       $gtm_id = esc_js($s['gtm_id']);
       ?>
-      <!-- Google Tag Manager (cmp 410gone, A2) -->
+      <!-- Google Tag Manager (cmp 410gone) -->
       <script>
         (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start': new Date().getTime(),event:'gtm.js'});
         var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';

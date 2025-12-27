@@ -2,7 +2,7 @@
 /**
  * Plugin Name: 410Gone Consent Manager for Google Consent Mode and GTM
  * Plugin URI: https://www.410-gone.fr
- * Description: CMP locale (Accepter / Refuser / Personnaliser) avec Google Consent Mode v2 + GTM (Variante A2).
+ * Description: CMP locale (Accepter / Refuser / Personnaliser) avec Google Consent Mode v2 + GTM.
  * Version: 1.3.0
  * Author: 410 Gone
  ls
