@@ -1,10 +1,11 @@
 (function () {
-  const CFG = window.CMP410 || {};
-  const COOKIE_NAME = CFG.cookieName || 'cmp_consent';
+  const CFG = window.CMP410GONE || {};
+  const COOKIE_NAME = CFG.cookieName || 'cmp410gone_consent';
+  const LEGACY_COOKIE_NAME = CFG.legacyCookieName || 'cmp_consent';
   const TTL_DAYS = Number(CFG.ttlDays || 180);
 
   function log(...args) {
-    if (CFG.debug) console.log('[CMP410]', ...args);
+    if (CFG.debug) console.log('[CMP410GONE]', ...args);
   }
 
   const $wrap = document.getElementById('cmp410');
@@ -73,7 +74,7 @@
   }
 
   function getConsent() {
-    const raw = getCookie(COOKIE_NAME);
+    const raw = getCookie(COOKIE_NAME) || getCookie(LEGACY_COOKIE_NAME);
     if (!raw) return null;
     const obj = safeParse(raw);
     if (!obj || typeof obj !== 'object') return null;
@@ -133,9 +134,9 @@
     }
 
     window.dataLayer.push({
-      event: 'cmp_consent_update',
-      cmp_analytics: c.analytics_storage === 'granted',
-      cmp_retargeting: c.ad_storage === 'granted'
+      event: 'cmp410gone_consent_update',
+      cmp410gone_analytics: c.analytics_storage === 'granted',
+      cmp410gone_retargeting: c.ad_storage === 'granted'
     });
 
     log('consent update', c);
@@ -183,7 +184,7 @@
     hideAll();
   }
 
-  window.CMP410_open = function () {
+  window.CMP410GONE_open = function () {
     const c = getConsent();
     syncUIFromConsent(c);
     openModal();

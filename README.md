@@ -1,59 +1,59 @@
 === 410Gone Consent Manager for Google Consent Mode and GTM ===
-Contributors: 410gone
+Contributors: pvalibus, 410gone
 Tags: consent, cookies, gtm, privacy
 Requires at least: 6.0
 Tested up to: 6.9
 Requires PHP: 7.4
 Stable Tag: 1.4.1
-License: GPLv2 or later
-License URI: https://www.gnu.org/licenses/gpl-2.0.html
+License: GPLv3 or later
+License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
 Lightweight CMP for WordPress: cookie banner, Consent Mode v2, GTM, Polylang/WPML-ready.
 
 == Description ==
 410Gone Consent Manager for Google Consent Mode and GTM is a lightweight CMP with a cookie banner, customization modal, and Google Consent Mode v2 + Google Tag Manager compatibility. It includes desktop/mobile previews in the admin, design and label settings, and multilingual support (Polylang, WPML, or via filter).
 
-== Fonctionnalités clés ==
-* Bannière et popin "Personnaliser" configurables (titres, textes, boutons, liens).
-* Palette éditable (fond, texte par défaut, couleurs des boutons) avec color pickers.
-* Prévisualisation en direct desktop/mobile dans l'admin.
-* Injection automatique du dataLayer/consent par défaut dans le `<head>` et chargement conditionnel du conteneur GTM.
-* Shortcode `[cmp_manage_cookies]` pour afficher un lien « Gérer mes cookies » dans le contenu.
-* Traductions prêtes pour Polylang et WPML, avec filtre `cmp_410gone_translate_setting` pour d'autres plugins multilingues.
-* Options avancées : durée de conservation du consentement, debug console, forcer l'affichage pour les tests.
+== Key features ==
+* Configurable banner and “Customize” modal (titles, texts, buttons, links).
+* Editable palette (background, default text, accept/customize buttons) with color pickers.
+* Live desktop/mobile preview in the admin.
+* Automatic dataLayer/consent default injection in the `<head>` and conditional GTM loading.
+* Shortcode `[cmp410gone_manage_cookies]` to display a “Manage my cookies” link in content.
+* Translation-ready for Polylang/WPML, with the `cmp410gone_translate_setting` filter for other multilingual plugins.
+* Advanced options: consent retention, debug console, force display for testing.
 
 == Installation ==
-1. Copier le dossier du plugin dans `wp-content/plugins/` (ou compresser en zip puis installer via *Extensions → Ajouter → Téléverser*).
-2. Activer l'extension « 410Gone Consent Manager for Google Consent Mode and GTM » depuis le tableau de bord WordPress.
-3. Ouvrir *Réglages → 🍪 410Gone Consent Manager* pour configurer la CMP.
+1. Copy the plugin folder into `wp-content/plugins/` (or zip it and install via *Plugins → Add New → Upload Plugin*).
+2. Activate “410Gone Consent Manager for Google Consent Mode and GTM” in the WordPress dashboard.
+3. Open *Settings → 🍪 410Gone Consent Manager* to configure the CMP.
 
 == Configuration ==
 === Design ===
-* Activez/désactivez la CMP.
-* Choisissez les couleurs (fond/texte par défaut, boutons Accepter/Personnaliser) via les color pickers avec aperçu en direct.
+* Enable/disable the CMP.
+* Choose colors (background/default text, Accept/Customize buttons) via color pickers with live preview.
 
-=== Libellés ===
-* Renseignez les titres/textes de la bannière et de la popin, ainsi que les libellés des boutons.
-* Ajoutez les URLs de politique de confidentialité et de cookies.
+=== Labels ===
+* Set banner and modal titles/text, plus button labels.
+* Add privacy policy and cookie policy URLs.
 
 === Tracking & configuration ===
-* Saisissez l'ID de conteneur GTM (ex. `GTM-XXXXXXX`).
-* Ajustez `wait_for_update` (ms) pour le consentement par défaut si besoin.
+* Enter the GTM container ID (e.g. `GTM-XXXXXXX`).
+* Adjust `wait_for_update` (ms) for the consent default if needed.
 
-=== Avancé ===
-* Durée de conservation du choix (en jours).
-* Mode debug (console) et option pour forcer l'affichage du bandeau en test.
+=== Advanced ===
+* Consent retention duration (days).
+* Debug mode (console) and force display for testing.
 
-== Traductions ==
-1. Saisissez vos textes dans la langue principale puis enregistrez les réglages.
-2. **Polylang** : allez dans *Langues → Traductions de chaînes*, groupe **CMP 410gone**, et traduisez chaque clé (`cmp_410gone_banner_title`, `cmp_410gone_btn_accept`, etc.).
-3. **WPML** : allez dans *WPML → String Translation*, domaine **CMP 410gone**, puis traduisez les mêmes clés.
-4. **Autres plugins** : branchez-vous sur le filtre `cmp_410gone_translate_setting` pour fournir vos traductions personnalisées.
+== Translations ==
+1. Save your texts in the main language.
+2. **Polylang**: go to *Languages → String translations*, group **CMP 410gone**, and translate each key (`cmp410gone_banner_title`, `cmp410gone_btn_accept`, etc.).
+3. **WPML**: go to *WPML → String Translation*, domain **CMP 410gone**, then translate the same keys.
+4. **Other plugins**: hook into the `cmp410gone_translate_setting` filter to provide custom translations.
 
-== Utilisation front ==
-* La bannière et la popin sont injectées automatiquement (`wp_head`, `wp_footer`).
-* Le shortcode `[cmp_manage_cookies label="Gérer mes cookies"]` permet d'afficher un lien de gestion des cookies dans vos pages.
-* Les scripts tiers doivent être pilotés via GTM pour respecter les choix de consentement.
+== Frontend usage ==
+* The banner and modal are injected automatically (`wp_head`, `wp_footer`).
+* The shortcode `[cmp410gone_manage_cookies label="Manage my cookies"]` displays a management link.
+* Third-party scripts should be controlled via GTM to respect consent choices.
 
 == External services ==
 This plugin can load Google Tag Manager when you provide a GTM Container ID in the settings.
@@ -64,8 +64,8 @@ This plugin can load Google Tag Manager when you provide a GTM Container ID in t
 * Terms: https://marketingplatform.google.com/about/tag-manager/
 * Privacy: https://policies.google.com/privacy
 
-== Dépannage ==
-* En cas d'optimisation JS (ex. WP Rocket), excluez `cmp.js`/`410gone-consent-manager` du « Delay JavaScript execution », puis purgez le cache.
-* Activez le mode debug pour suivre le flux de consentement dans la console.
+== Troubleshooting ==
+* If using JS optimization (e.g. WP Rocket), exclude `cmp.js`/`410gone-consent-manager` from “Delay JavaScript execution”, then clear cache.
+* Enable debug mode to follow the consent flow in the console.
 
-Plus d'informations sur [tutoriel sur le site de 410 gone](https://www.410-gone.fr/blog/plugin-cmp-wordpress-gratuit-consent-mode-v2-gtm.html)
+More information: https://www.410-gone.fr/blog/plugin-cmp-wordpress-gratuit-consent-mode-v2-gtm.html

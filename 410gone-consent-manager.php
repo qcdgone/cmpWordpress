@@ -7,7 +7,7 @@
  * Author: 410 Gone
  *  Author URI: https://www.410-gone.fr
  *
- * License: GPLv2 or later
+ * License: GPLv3 or later
  * Text Domain: 410gone-consent-manager
  * Domain Path: /languages
  */
@@ -16,10 +16,10 @@ if (!defined('ABSPATH')) {
   exit;
 }
 
-if (!defined('CMP_410GONE_PLUGIN_FILE')) {
-  define('CMP_410GONE_PLUGIN_FILE', __FILE__);
+if (!defined('CMP410GONE_PLUGIN_FILE')) {
+  define('CMP410GONE_PLUGIN_FILE', __FILE__);
 }
 
 require_once plugin_dir_path(__FILE__) . 'includes/class-cmp-410gone.php';
 
-CMP_410GONE::init();
+CMP410GONE_Manager::init();
