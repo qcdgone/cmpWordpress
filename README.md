@@ -8,10 +8,10 @@ Stable Tag: 1.3.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-CMP légère pour WordPress : bandeau cookies, Consent Mode v2, GTM, traductions Polylang/WPML.
+Lightweight CMP for WordPress: cookie banner, Consent Mode v2, GTM, Polylang/WPML-ready.
 
 == Description ==
-410Gone Consent Manager for Google Consent Mode and GTM propose une CMP légère avec bandeau d'information, popin de personnalisation et compatibilité Google Consent Mode v2 + Google Tag Manager. Le plugin inclut des aperçus desktop/mobile dans l'admin, des réglages de design et de libellés, et une compatibilité multilingue (Polylang, WPML ou via filtre).
+410Gone Consent Manager for Google Consent Mode and GTM is a lightweight CMP with a cookie banner, customization modal, and Google Consent Mode v2 + Google Tag Manager compatibility. It includes desktop/mobile previews in the admin, design and label settings, and multilingual support (Polylang, WPML, or via filter).
 
 == Fonctionnalités clés ==
 * Bannière et popin "Personnaliser" configurables (titres, textes, boutons, liens).
@@ -54,6 +54,15 @@ CMP légère pour WordPress : bandeau cookies, Consent Mode v2, GTM, traductions
 * La bannière et la popin sont injectées automatiquement (`wp_head`, `wp_footer`).
 * Le shortcode `[cmp_manage_cookies label="Gérer mes cookies"]` permet d'afficher un lien de gestion des cookies dans vos pages.
 * Les scripts tiers doivent être pilotés via GTM pour respecter les choix de consentement.
+
+== External services ==
+This plugin can load Google Tag Manager when you provide a GTM Container ID in the settings.
+
+* Service: Google Tag Manager (gtm.js and noscript iframe).
+* Data sent: the GTM container ID and the consent state stored in the dataLayer.
+* When: on page load, only if GTM is enabled in the plugin settings.
+* Terms: https://marketingplatform.google.com/about/tag-manager/
+* Privacy: https://policies.google.com/privacy
 
 == Dépannage ==
 * En cas d'optimisation JS (ex. WP Rocket), excluez `cmp.js`/`410gone-consent-manager` du « Delay JavaScript execution », puis purgez le cache.

@@ -109,16 +109,16 @@ class CMP_410GONE {
 
       'privacy_url' => '',
       'cookie_policy_url' => '',
-      'banner_title' => __('🍪 Gestion des cookies', 'cmp'),
-      'banner_text' => __('Nous utilisons des cookies essentiels au fonctionnement du site, et (si vous l’acceptez) des cookies pour la mesure d’audience et le retargeting publicitaire.', 'cmp'),
-      'btn_accept' => __('Accepter', 'cmp'),
-      'btn_reject' => __('Refuser', 'cmp'),
-      'btn_customize' => __('Personnaliser', 'cmp'),
-      'btn_save' => __('Enregistrer', 'cmp'),
-      'modal_title' => __('Préférences', 'cmp'),
-      'modal_desc_essentials' => __('Nécessaires au fonctionnement du site (toujours actifs).', 'cmp'),
-      'modal_desc_analytics' => __('Mesure d’audience (ex. Google Analytics 4).', 'cmp'),
-      'modal_desc_retargeting' => __('Publicités personnalisées (gérées via GTM).', 'cmp'),
+      'banner_title' => __('🍪 Gestion des cookies', '410gone-consent-manager'),
+      'banner_text' => __('Nous utilisons des cookies essentiels au fonctionnement du site, et (si vous l’acceptez) des cookies pour la mesure d’audience et le retargeting publicitaire.', '410gone-consent-manager'),
+      'btn_accept' => __('Accepter', '410gone-consent-manager'),
+      'btn_reject' => __('Refuser', '410gone-consent-manager'),
+      'btn_customize' => __('Personnaliser', '410gone-consent-manager'),
+      'btn_save' => __('Enregistrer', '410gone-consent-manager'),
+      'modal_title' => __('Préférences', '410gone-consent-manager'),
+      'modal_desc_essentials' => __('Nécessaires au fonctionnement du site (toujours actifs).', '410gone-consent-manager'),
+      'modal_desc_analytics' => __('Mesure d’audience (ex. Google Analytics 4).', '410gone-consent-manager'),
+      'modal_desc_retargeting' => __('Publicités personnalisées (gérées via GTM).', '410gone-consent-manager'),
 
       'background_color' => '#ffffff',
       'text_color' => '#0b1621',
@@ -144,7 +144,7 @@ class CMP_410GONE {
 
   public static function plugin_action_links($links) {
     $settings_url = admin_url('options-general.php?page=' . self::PAGE_SLUG);
-    return array_merge(['settings' => '<a href="' . esc_url($settings_url) . '">' . esc_html(__('Réglages', 'cmp')) . '</a>'], $links);
+    return array_merge(['settings' => '<a href="' . esc_url($settings_url) . '">' . esc_html(__('Réglages', '410gone-consent-manager')) . '</a>'], $links);
   }
 
   public static function filter_plugin_row_meta($links, $file) {
@@ -162,7 +162,7 @@ class CMP_410GONE {
   }
 
   public static function admin_menu() {
-    add_options_page(__('🍪 410Gone Consent Manager — Réglages', 'cmp'), __('🍪 410Gone Consent Manager', 'cmp'), 'manage_options', self::PAGE_SLUG, [__CLASS__, 'settings_page']);
+    add_options_page(__('🍪 410Gone Consent Manager — Réglages', '410gone-consent-manager'), __('🍪 410Gone Consent Manager', '410gone-consent-manager'), 'manage_options', self::PAGE_SLUG, [__CLASS__, 'settings_page']);
   }
 
   public static function register_settings() {
@@ -172,30 +172,30 @@ class CMP_410GONE {
       'default' => self::defaults(),
     ]);
 
-    add_settings_section('cmp_410gone_design', __('Design', 'cmp'), [__CLASS__, 'section_design'], self::PAGE_SLUG);
-    add_settings_field('enable', __('Activer la CMP', 'cmp'), [__CLASS__, 'field_enable'], self::PAGE_SLUG, 'cmp_410gone_design');
-    add_settings_field('accept_btn_color', __('Couleur bouton “Accepter”', 'cmp'), [__CLASS__, 'field_accept_btn_color'], self::PAGE_SLUG, 'cmp_410gone_design');
-    add_settings_field('accept_btn_text_color', __('Couleur texte bouton “Accepter”', 'cmp'), [__CLASS__, 'field_accept_btn_text_color'], self::PAGE_SLUG, 'cmp_410gone_design');
-    add_settings_field('background_color', __('Couleur de fond', 'cmp'), [__CLASS__, 'field_background_color'], self::PAGE_SLUG, 'cmp_410gone_design');
-    add_settings_field('text_color', __('Couleur du texte', 'cmp'), [__CLASS__, 'field_text_color'], self::PAGE_SLUG, 'cmp_410gone_design');
-    add_settings_field('customize_btn_color', __('Couleur bouton “Personnaliser”', 'cmp'), [__CLASS__, 'field_customize_btn_color'], self::PAGE_SLUG, 'cmp_410gone_design');
-    add_settings_field('customize_btn_text_color', __('Couleur texte bouton “Personnaliser”', 'cmp'), [__CLASS__, 'field_customize_btn_text_color'], self::PAGE_SLUG, 'cmp_410gone_design');
+    add_settings_section('cmp_410gone_design', __('Design', '410gone-consent-manager'), [__CLASS__, 'section_design'], self::PAGE_SLUG);
+    add_settings_field('enable', __('Activer la CMP', '410gone-consent-manager'), [__CLASS__, 'field_enable'], self::PAGE_SLUG, 'cmp_410gone_design');
+    add_settings_field('accept_btn_color', __('Couleur bouton “Accepter”', '410gone-consent-manager'), [__CLASS__, 'field_accept_btn_color'], self::PAGE_SLUG, 'cmp_410gone_design');
+    add_settings_field('accept_btn_text_color', __('Couleur texte bouton “Accepter”', '410gone-consent-manager'), [__CLASS__, 'field_accept_btn_text_color'], self::PAGE_SLUG, 'cmp_410gone_design');
+    add_settings_field('background_color', __('Couleur de fond', '410gone-consent-manager'), [__CLASS__, 'field_background_color'], self::PAGE_SLUG, 'cmp_410gone_design');
+    add_settings_field('text_color', __('Couleur du texte', '410gone-consent-manager'), [__CLASS__, 'field_text_color'], self::PAGE_SLUG, 'cmp_410gone_design');
+    add_settings_field('customize_btn_color', __('Couleur bouton “Personnaliser”', '410gone-consent-manager'), [__CLASS__, 'field_customize_btn_color'], self::PAGE_SLUG, 'cmp_410gone_design');
+    add_settings_field('customize_btn_text_color', __('Couleur texte bouton “Personnaliser”', '410gone-consent-manager'), [__CLASS__, 'field_customize_btn_text_color'], self::PAGE_SLUG, 'cmp_410gone_design');
 
-    add_settings_section('cmp_410gone_labels', __('Libellé', 'cmp'), [__CLASS__, 'section_labels'], self::PAGE_SLUG);
-    add_settings_field('privacy_url', __('URL Politique de confidentialité', 'cmp'), [__CLASS__, 'field_privacy_url'], self::PAGE_SLUG, 'cmp_410gone_labels');
-    add_settings_field('cookie_policy_url', __('URL Politique cookies (optionnel)', 'cmp'), [__CLASS__, 'field_cookie_policy_url'], self::PAGE_SLUG, 'cmp_410gone_labels');
-    add_settings_field('banner_title', __('Titre du bandeau', 'cmp'), [__CLASS__, 'field_banner_title'], self::PAGE_SLUG, 'cmp_410gone_labels');
-    add_settings_field('banner_text', __('Texte du bandeau', 'cmp'), [__CLASS__, 'field_banner_text'], self::PAGE_SLUG, 'cmp_410gone_labels');
-    add_settings_field('btn_labels', __('Libellés des boutons', 'cmp'), [__CLASS__, 'field_btn_labels'], self::PAGE_SLUG, 'cmp_410gone_labels');
-    add_settings_field('modal_labels', __('Libellés de la popin', 'cmp'), [__CLASS__, 'field_modal_labels'], self::PAGE_SLUG, 'cmp_410gone_labels');
+    add_settings_section('cmp_410gone_labels', __('Libellé', '410gone-consent-manager'), [__CLASS__, 'section_labels'], self::PAGE_SLUG);
+    add_settings_field('privacy_url', __('URL Politique de confidentialité', '410gone-consent-manager'), [__CLASS__, 'field_privacy_url'], self::PAGE_SLUG, 'cmp_410gone_labels');
+    add_settings_field('cookie_policy_url', __('URL Politique cookies (optionnel)', '410gone-consent-manager'), [__CLASS__, 'field_cookie_policy_url'], self::PAGE_SLUG, 'cmp_410gone_labels');
+    add_settings_field('banner_title', __('Titre du bandeau', '410gone-consent-manager'), [__CLASS__, 'field_banner_title'], self::PAGE_SLUG, 'cmp_410gone_labels');
+    add_settings_field('banner_text', __('Texte du bandeau', '410gone-consent-manager'), [__CLASS__, 'field_banner_text'], self::PAGE_SLUG, 'cmp_410gone_labels');
+    add_settings_field('btn_labels', __('Libellés des boutons', '410gone-consent-manager'), [__CLASS__, 'field_btn_labels'], self::PAGE_SLUG, 'cmp_410gone_labels');
+    add_settings_field('modal_labels', __('Libellés de la popin', '410gone-consent-manager'), [__CLASS__, 'field_modal_labels'], self::PAGE_SLUG, 'cmp_410gone_labels');
 
-    add_settings_section('cmp_410gone_tracking', __('Tracking & configuration', 'cmp'), [__CLASS__, 'section_tracking'], self::PAGE_SLUG);
+    add_settings_section('cmp_410gone_tracking', __('Tracking & configuration', '410gone-consent-manager'), [__CLASS__, 'section_tracking'], self::PAGE_SLUG);
     add_settings_field('gtm_id', 'GTM Container ID', [__CLASS__, 'field_gtm_id'], self::PAGE_SLUG, 'cmp_410gone_tracking');
-    add_settings_field('consent_wait_for_update_ms', __('Consent wait_for_update (ms)', 'cmp'), [__CLASS__, 'field_wait'], self::PAGE_SLUG, 'cmp_410gone_tracking');
-    add_settings_section('cmp_410gone_advanced', __('Avancé', 'cmp'), [__CLASS__, 'section_advanced'], self::PAGE_SLUG);
-    add_settings_field('ttl_days', __('Durée de conservation du choix (jours)', 'cmp'), [__CLASS__, 'field_ttl_days'], self::PAGE_SLUG, 'cmp_410gone_advanced');
-    add_settings_field('debug', __('Debug console', 'cmp'), [__CLASS__, 'field_debug'], self::PAGE_SLUG, 'cmp_410gone_advanced');
-    add_settings_field('force_show', __('Forcer l’affichage (test)', 'cmp'), [__CLASS__, 'field_force_show'], self::PAGE_SLUG, 'cmp_410gone_advanced');
+    add_settings_field('consent_wait_for_update_ms', __('Consent wait_for_update (ms)', '410gone-consent-manager'), [__CLASS__, 'field_wait'], self::PAGE_SLUG, 'cmp_410gone_tracking');
+    add_settings_section('cmp_410gone_advanced', __('Avancé', '410gone-consent-manager'), [__CLASS__, 'section_advanced'], self::PAGE_SLUG);
+    add_settings_field('ttl_days', __('Durée de conservation du choix (jours)', '410gone-consent-manager'), [__CLASS__, 'field_ttl_days'], self::PAGE_SLUG, 'cmp_410gone_advanced');
+    add_settings_field('debug', __('Debug console', '410gone-consent-manager'), [__CLASS__, 'field_debug'], self::PAGE_SLUG, 'cmp_410gone_advanced');
+    add_settings_field('force_show', __('Forcer l’affichage (test)', '410gone-consent-manager'), [__CLASS__, 'field_force_show'], self::PAGE_SLUG, 'cmp_410gone_advanced');
   }
 
   public static function sanitize_settings($in) {
@@ -299,7 +299,7 @@ class CMP_410GONE {
     }
     ?>
     <div class="wrap cmp410-admin">
-      <h1><?php esc_html_e('🍪 410Gone Consent Manager — Réglages', 'cmp'); ?></h1>
+      <h1><?php esc_html_e('🍪 410Gone Consent Manager — Réglages', '410gone-consent-manager'); ?></h1>
       <p><a href="https://www.410-gone.fr" target="_blank" rel="noopener noreferrer">410gone</a></p>
 
       <style>
@@ -544,18 +544,18 @@ class CMP_410GONE {
       </style>
 
       <div class="cmp410-callout">
-        <strong><?php esc_html_e('WP Rocket (recommandé) :', 'cmp'); ?></strong>
+        <strong><?php esc_html_e('WP Rocket (recommandé) :', '410gone-consent-manager'); ?></strong>
         <ul style="margin:8px 0 0 18px;">
-          <li><?php esc_html_e('Optimiser les fichiers → JavaScript → Exclure cmp.js (ou 410gone-consent-manager) de “Delay JavaScript execution”.', 'cmp'); ?></li>
-          <li><?php esc_html_e('Puis : purge WP Rocket + Ctrl+F5 (ou navigation privée).', 'cmp'); ?></li>
+          <li><?php esc_html_e('Optimiser les fichiers → JavaScript → Exclure cmp.js (ou 410gone-consent-manager) de “Delay JavaScript execution”.', '410gone-consent-manager'); ?></li>
+          <li><?php esc_html_e('Puis : purge WP Rocket + Ctrl+F5 (ou navigation privée).', '410gone-consent-manager'); ?></li>
         </ul>
       </div>
 
       <ul class="cmp410-anchors">
-        <li><a href="#cmp_410gone_design">🎨 <?php esc_html_e('Design', 'cmp'); ?></a></li>
-        <li><a href="#cmp_410gone_labels">✏️ <?php esc_html_e('Libellé', 'cmp'); ?></a></li>
-        <li><a href="#cmp_410gone_tracking">📈 <?php esc_html_e('Tracking & configuration', 'cmp'); ?></a></li>
-        <li><a href="#cmp_410gone_advanced">🛠️ <?php esc_html_e('Avancé', 'cmp'); ?></a></li>
+        <li><a href="#cmp_410gone_design">🎨 <?php esc_html_e('Design', '410gone-consent-manager'); ?></a></li>
+        <li><a href="#cmp_410gone_labels">✏️ <?php esc_html_e('Libellé', '410gone-consent-manager'); ?></a></li>
+        <li><a href="#cmp_410gone_tracking">📈 <?php esc_html_e('Tracking & configuration', '410gone-consent-manager'); ?></a></li>
+        <li><a href="#cmp_410gone_advanced">🛠️ <?php esc_html_e('Avancé', '410gone-consent-manager'); ?></a></li>
       </ul>
 
       <form method="post" action="options.php">
@@ -570,84 +570,14 @@ class CMP_410GONE {
           ?>
         </div>
 
-        <?php submit_button(__('Enregistrer', 'cmp')); ?>
+        <?php submit_button(__('Enregistrer', '410gone-consent-manager')); ?>
       </form>
 
       <hr />
-      <h2><?php esc_html_e('Lien “Gérer mes cookies”', 'cmp'); ?></h2>
-      <p><?php esc_html_e('Shortcode :', 'cmp'); ?></p>
-      <code>[cmp_manage_cookies label="<?php echo esc_attr(__('Gérer mes cookies', 'cmp')); ?>"]</code>
+      <h2><?php esc_html_e('Lien “Gérer mes cookies”', '410gone-consent-manager'); ?></h2>
+      <p><?php esc_html_e('Shortcode :', '410gone-consent-manager'); ?></p>
+      <code>[cmp_manage_cookies label="<?php echo esc_attr(__('Gérer mes cookies', '410gone-consent-manager')); ?>"]</code>
     </div>
-    <script>
-      document.addEventListener('DOMContentLoaded', function() {
-        const colorPickers = document.querySelectorAll('.cmp410-color-picker');
-        const colorInputs = document.querySelectorAll('.cmp410-color-value');
-        const bindInputs = document.querySelectorAll('[data-preview-bind]');
-
-        function updatePreviewColor(target, value) {
-          document.querySelectorAll('[data-preview-root]').forEach(function(root) {
-            if (!value) { return; }
-            if (target === 'accept_btn_color') {
-              root.style.setProperty('--cmp410-accept-bg', value);
-            }
-            if (target === 'accept_btn_text_color') {
-              root.style.setProperty('--cmp410-accept-fg', value);
-            }
-            if (target === 'customize_btn_color') {
-              root.style.setProperty('--cmp410-customize-bg', value);
-            }
-            if (target === 'customize_btn_text_color') {
-              root.style.setProperty('--cmp410-customize-fg', value);
-            }
-            if (target === 'background_color') {
-              root.style.setProperty('--cmp410-background', value);
-              root.style.setProperty('--cmp410-surface', value);
-            }
-            if (target === 'text_color') {
-              root.style.setProperty('--cmp410-foreground', value);
-              root.style.setProperty('--cmp410-text', value);
-            }
-
-            root.querySelectorAll('[data-preview="' + target + '"]').forEach(function(el) {
-              el.style.backgroundColor = value;
-            });
-          });
-        }
-
-        function syncColor(target, value, source) {
-          document.querySelectorAll('[data-target="' + target + '"]').forEach(function(el) {
-            if (el !== source) {
-              el.value = value;
-            }
-          });
-          updatePreviewColor(target, value);
-        }
-
-        colorPickers.forEach(function(input) {
-          input.addEventListener('input', function() {
-            syncColor(this.dataset.target, this.value, this);
-          });
-        });
-
-        colorInputs.forEach(function(input) {
-          input.addEventListener('input', function() {
-            if (/^#[0-9A-Fa-f]{6}$/.test(this.value)) {
-              syncColor(this.dataset.target, this.value, this);
-            }
-          });
-        });
-
-        bindInputs.forEach(function(input) {
-          input.addEventListener('input', function() {
-            const selector = '[data-preview-bind="' + this.dataset.previewBind + '"]';
-            document.querySelectorAll(selector).forEach(function(el) {
-              if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') { return; }
-              el.textContent = input.value;
-            });
-          });
-        });
-      });
-    </script>
     <?php
   }
 
@@ -682,23 +612,23 @@ class CMP_410GONE {
 
   public static function section_design() {
     $s = self::get_settings();
-    echo '<p>' . esc_html__('Personnalise les couleurs du bandeau et vérifie le rendu desktop/mobile.', 'cmp') . '</p>';
+    echo '<p>' . esc_html__('Personnalise les couleurs du bandeau et vérifie le rendu desktop/mobile.', 'consent-management') . '</p>';
     self::render_preview_block($s, 'design');
   }
 
   public static function section_labels() {
     $s = self::get_settings();
-    echo '<p>' . esc_html__('Adapte les textes et liens. Les libellés restent compatibles Polylang / WPML et filtres personnalisés.', 'cmp') . '</p>';
+    echo '<p>' . esc_html__('Adapte les textes et liens. Les libellés restent compatibles Polylang / WPML et filtres personnalisés.', 'consent-management') . '</p>';
     self::render_preview_block($s, 'labels');
   }
 
   public static function section_tracking() {
-    echo '<p>' . esc_html__('GTM peut être chargé tôt, mais le Consent Mode v2 démarre en', 'cmp') . ' <code>denied</code> ' . esc_html__('puis se met à jour selon le choix utilisateur.', 'cmp') . '</p>';
-    echo '<p><strong>WP Rocket</strong> : ' . esc_html__('exclure', 'cmp') . ' <code>cmp.js</code> ' . esc_html__('du “Delay JS execution”.', 'cmp') . '</p>';
+    echo '<p>' . esc_html__('GTM peut être chargé tôt, mais le Consent Mode v2 démarre en', 'consent-management') . ' <code>denied</code> ' . esc_html__('puis se met à jour selon le choix utilisateur.', 'consent-management') . '</p>';
+    echo '<p><strong>WP Rocket</strong> : ' . esc_html__('exclure', 'consent-management') . ' <code>cmp.js</code> ' . esc_html__('du “Delay JS execution”.', 'consent-management') . '</p>';
   }
 
   public static function section_advanced() {
-    echo '<p>' . esc_html__('Options pour le debug, les tests forcés et la durée de conservation du consentement.', 'cmp') . '</p>';
+    echo '<p>' . esc_html__('Options pour le debug, les tests forcés et la durée de conservation du consentement.', 'consent-management') . '</p>';
   }
 
   private static function render_preview_block($settings, $context) {
@@ -715,11 +645,11 @@ class CMP_410GONE {
       <div class="cmp410-preview" data-preview-root style="<?php echo esc_attr($style); ?>">
       <div class="cmp410-preview-grid">
         <div class="cmp410-preview-device">
-          <div class="cmp410-preview-label"><?php esc_html_e('Aperçu desktop', 'cmp'); ?></div>
+          <div class="cmp410-preview-label"><?php esc_html_e('Aperçu desktop', 'consent-management'); ?></div>
           <?php self::render_preview_content($settings, 'desktop'); ?>
         </div>
         <div class="cmp410-preview-device is-mobile">
-          <div class="cmp410-preview-label"><?php esc_html_e('Aperçu mobile', 'cmp'); ?></div>
+          <div class="cmp410-preview-label"><?php esc_html_e('Aperçu mobile', 'consent-management'); ?></div>
           <?php self::render_preview_content($settings, 'mobile'); ?>
         </div>
       </div>
@@ -738,11 +668,11 @@ class CMP_410GONE {
           <div class="cmp410-desc">
             <span data-preview-bind="banner_text"><?php echo esc_html(wp_strip_all_tags($settings['banner_text'])); ?></span>
               <?php if ($privacy): ?>
-                <a href="<?php echo esc_url($privacy); ?>" class="cmp410-link" target="_blank" rel="noopener noreferrer"><?php esc_html_e('Politique de confidentialité', 'cmp'); ?></a>
+                <a href="<?php echo esc_url($privacy); ?>" class="cmp410-link" target="_blank" rel="noopener noreferrer"><?php esc_html_e('Politique de confidentialité', 'consent-management'); ?></a>
               <?php endif; ?>
               <?php if ($cookies): ?>
                 <span class="cmp410-sep">·</span>
-                <a href="<?php echo esc_url($cookies); ?>" class="cmp410-link" target="_blank" rel="noopener noreferrer"><?php esc_html_e('Politique cookies', 'cmp'); ?></a>
+                <a href="<?php echo esc_url($cookies); ?>" class="cmp410-link" target="_blank" rel="noopener noreferrer"><?php esc_html_e('Politique cookies', 'consent-management'); ?></a>
               <?php endif; ?>
           </div>
 
@@ -760,21 +690,21 @@ class CMP_410GONE {
           </div>
           <div class="cmp410-row">
             <div>
-              <div class="cmp410-row-title"><?php esc_html_e('Essentiels', 'cmp'); ?></div>
+              <div class="cmp410-row-title"><?php esc_html_e('Essentiels', 'consent-management'); ?></div>
               <div class="cmp410-row-desc" data-preview-bind="modal_desc_essentials"><?php echo esc_html($settings['modal_desc_essentials']); ?></div>
             </div>
             <input type="checkbox" checked disabled />
           </div>
           <div class="cmp410-row">
             <div>
-              <div class="cmp410-row-title"><?php esc_html_e('Analytics', 'cmp'); ?></div>
+              <div class="cmp410-row-title"><?php esc_html_e('Analytics', 'consent-management'); ?></div>
               <div class="cmp410-row-desc" data-preview-bind="modal_desc_analytics"><?php echo esc_html($settings['modal_desc_analytics']); ?></div>
             </div>
             <input type="checkbox" checked />
           </div>
           <div class="cmp410-row">
             <div>
-              <div class="cmp410-row-title"><?php esc_html_e('Retargeting', 'cmp'); ?></div>
+              <div class="cmp410-row-title"><?php esc_html_e('Retargeting', 'consent-management'); ?></div>
               <div class="cmp410-row-desc" data-preview-bind="modal_desc_retargeting"><?php echo esc_html($settings['modal_desc_retargeting']); ?></div>
             </div>
             <input type="checkbox" />
@@ -791,19 +721,19 @@ class CMP_410GONE {
 
   public static function field_enable() {
     $s = self::get_settings(); ?>
-    <label><input type="checkbox" name="<?php echo esc_attr(self::OPTION_KEY); ?>[enable]" value="1" <?php checked(1, (int)$s['enable']); ?> /> <?php esc_html_e("Activer l’affichage du bandeau", 'cmp'); ?></label>
+    <label><input type="checkbox" name="<?php echo esc_attr(self::OPTION_KEY); ?>[enable]" value="1" <?php checked(1, (int)$s['enable']); ?> /> <?php esc_html_e("Activer l’affichage du bandeau", 'consent-management'); ?></label>
   <?php }
 
   public static function field_gtm_id() {
     $s = self::get_settings(); ?>
     <input type="text" name="<?php echo esc_attr(self::OPTION_KEY); ?>[gtm_id]" value="<?php echo esc_attr($s['gtm_id']); ?>" placeholder="GTM-XXXXXXX" class="regular-text" />
-    <p class="description"><?php esc_html_e('GTM est chargé tôt (si renseigné). Dans GTM, configure tes tags pour exiger le consentement (analytics/ad).', 'cmp'); ?></p>
+    <p class="description"><?php esc_html_e('GTM est chargé tôt (si renseigné). Dans GTM, configure tes tags pour exiger le consentement (analytics/ad).', 'consent-management'); ?></p>
   <?php }
 
   public static function field_wait() {
     $s = self::get_settings(); ?>
     <input type="number" min="0" max="5000" name="<?php echo esc_attr(self::OPTION_KEY); ?>[consent_wait_for_update_ms]" value="<?php echo (int)$s['consent_wait_for_update_ms']; ?>" />
-    <p class="description"><?php esc_html_e('Passé à wait_for_update. Valeurs typiques : 300–800ms.', 'cmp'); ?></p>
+    <p class="description"><?php esc_html_e('Passé à wait_for_update. Valeurs typiques : 300–800ms.', 'consent-management'); ?></p>
   <?php }
 
   public static function field_privacy_url() {
@@ -830,19 +760,19 @@ class CMP_410GONE {
     $s = self::get_settings(); ?>
     <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; max-width:820px;">
       <div>
-        <label><?php esc_html_e('Accepter', 'cmp'); ?></label><br/>
+        <label><?php esc_html_e('Accepter', 'consent-management'); ?></label><br/>
         <input type="text" name="<?php echo esc_attr(self::OPTION_KEY); ?>[btn_accept]" value="<?php echo esc_attr($s['btn_accept']); ?>" class="regular-text" data-preview-bind="btn_accept" />
       </div>
       <div>
-        <label><?php esc_html_e('Refuser', 'cmp'); ?></label><br/>
+        <label><?php esc_html_e('Refuser', 'consent-management'); ?></label><br/>
         <input type="text" name="<?php echo esc_attr(self::OPTION_KEY); ?>[btn_reject]" value="<?php echo esc_attr($s['btn_reject']); ?>" class="regular-text" data-preview-bind="btn_reject" />
       </div>
       <div>
-        <label><?php esc_html_e('Personnaliser', 'cmp'); ?></label><br/>
+        <label><?php esc_html_e('Personnaliser', 'consent-management'); ?></label><br/>
         <input type="text" name="<?php echo esc_attr(self::OPTION_KEY); ?>[btn_customize]" value="<?php echo esc_attr($s['btn_customize']); ?>" class="regular-text" data-preview-bind="btn_customize" />
       </div>
       <div>
-        <label><?php esc_html_e('Enregistrer', 'cmp'); ?></label><br/>
+        <label><?php esc_html_e('Enregistrer', 'consent-management'); ?></label><br/>
         <input type="text" name="<?php echo esc_attr(self::OPTION_KEY); ?>[btn_save]" value="<?php echo esc_attr($s['btn_save']); ?>" class="regular-text" data-preview-bind="btn_save" />
       </div>
     </div>
@@ -852,19 +782,19 @@ class CMP_410GONE {
     $s = self::get_settings(); ?>
     <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; max-width:820px;">
       <div>
-        <label><?php esc_html_e('Titre de la popin', 'cmp'); ?></label><br/>
+        <label><?php esc_html_e('Titre de la popin', 'consent-management'); ?></label><br/>
         <input type="text" name="<?php echo esc_attr(self::OPTION_KEY); ?>[modal_title]" value="<?php echo esc_attr($s['modal_title']); ?>" class="regular-text" data-preview-bind="modal_title" />
       </div>
       <div>
-        <label><?php esc_html_e('Sous-titre Essentiels', 'cmp'); ?></label><br/>
+        <label><?php esc_html_e('Sous-titre Essentiels', 'consent-management'); ?></label><br/>
         <input type="text" name="<?php echo esc_attr(self::OPTION_KEY); ?>[modal_desc_essentials]" value="<?php echo esc_attr($s['modal_desc_essentials']); ?>" class="regular-text" data-preview-bind="modal_desc_essentials" />
       </div>
       <div>
-        <label><?php esc_html_e('Sous-titre Analytics', 'cmp'); ?></label><br/>
+        <label><?php esc_html_e('Sous-titre Analytics', 'consent-management'); ?></label><br/>
         <input type="text" name="<?php echo esc_attr(self::OPTION_KEY); ?>[modal_desc_analytics]" value="<?php echo esc_attr($s['modal_desc_analytics']); ?>" class="regular-text" data-preview-bind="modal_desc_analytics" />
       </div>
       <div>
-        <label><?php esc_html_e('Sous-titre Retargeting', 'cmp'); ?></label><br/>
+        <label><?php esc_html_e('Sous-titre Retargeting', 'consent-management'); ?></label><br/>
         <input type="text" name="<?php echo esc_attr(self::OPTION_KEY); ?>[modal_desc_retargeting]" value="<?php echo esc_attr($s['modal_desc_retargeting']); ?>" class="regular-text" data-preview-bind="modal_desc_retargeting" />
       </div>
     </div>
@@ -873,55 +803,55 @@ class CMP_410GONE {
   public static function field_accept_btn_color() {
     $s = self::get_settings(); ?>
     <div class="cmp410-color-control">
-      <input type="color" class="cmp410-color-picker" data-target="accept_btn_color" value="<?php echo esc_attr($s['accept_btn_color']); ?>" aria-label="<?php esc_attr_e('Choisir la couleur du bouton Accepter', 'cmp'); ?>" />
+      <input type="color" class="cmp410-color-picker" data-target="accept_btn_color" value="<?php echo esc_attr($s['accept_btn_color']); ?>" aria-label="<?php esc_attr_e('Choisir la couleur du bouton Accepter', 'consent-management'); ?>" />
       <input type="text" name="<?php echo esc_attr(self::OPTION_KEY); ?>[accept_btn_color]" value="<?php echo esc_attr($s['accept_btn_color']); ?>" class="regular-text cmp410-color-value" data-target="accept_btn_color" placeholder="#00ceff" pattern="^#[A-Fa-f0-9]{6}$" />
     </div>
-    <p class="description"><?php esc_html_e('Couleur de fond du bouton Accepter (hex ex: #00ceff).', 'cmp'); ?></p>
+    <p class="description"><?php esc_html_e('Couleur de fond du bouton Accepter (hex ex: #00ceff).', 'consent-management'); ?></p>
   <?php }
 
   public static function field_accept_btn_text_color() {
     $s = self::get_settings(); ?>
     <div class="cmp410-color-control">
-      <input type="color" class="cmp410-color-picker" data-target="accept_btn_text_color" value="<?php echo esc_attr($s['accept_btn_text_color']); ?>" aria-label="<?php esc_attr_e('Choisir la couleur du texte “Accepter”', 'cmp'); ?>" />
+      <input type="color" class="cmp410-color-picker" data-target="accept_btn_text_color" value="<?php echo esc_attr($s['accept_btn_text_color']); ?>" aria-label="<?php esc_attr_e('Choisir la couleur du texte “Accepter”', 'consent-management'); ?>" />
       <input type="text" name="<?php echo esc_attr(self::OPTION_KEY); ?>[accept_btn_text_color]" value="<?php echo esc_attr($s['accept_btn_text_color']); ?>" class="regular-text cmp410-color-value" data-target="accept_btn_text_color" placeholder="#ffffff" pattern="^#[A-Fa-f0-9]{6}$" />
     </div>
-    <p class="description"><?php esc_html_e('Couleur du texte du bouton Accepter (hex ex: #001018 ou #ffffff).', 'cmp'); ?></p>
+    <p class="description"><?php esc_html_e('Couleur du texte du bouton Accepter (hex ex: #001018 ou #ffffff).', 'consent-management'); ?></p>
   <?php }
 
   public static function field_background_color() {
     $s = self::get_settings(); ?>
     <div class="cmp410-color-control">
-      <input type="color" class="cmp410-color-picker" data-target="background_color" value="<?php echo esc_attr($s['background_color']); ?>" aria-label="<?php esc_attr_e('Choisir la couleur de fond du bandeau et du modal', 'cmp'); ?>" />
+      <input type="color" class="cmp410-color-picker" data-target="background_color" value="<?php echo esc_attr($s['background_color']); ?>" aria-label="<?php esc_attr_e('Choisir la couleur de fond du bandeau et du modal', 'consent-management'); ?>" />
       <input type="text" name="<?php echo esc_attr(self::OPTION_KEY); ?>[background_color]" value="<?php echo esc_attr($s['background_color']); ?>" class="regular-text cmp410-color-value" data-target="background_color" placeholder="#ffffff" pattern="^#[A-Fa-f0-9]{6}$" />
     </div>
-    <p class="description"><?php esc_html_e('Couleur de fond appliquée au bandeau et à l’écran de personnalisation.', 'cmp'); ?></p>
+    <p class="description"><?php esc_html_e('Couleur de fond appliquée au bandeau et à l’écran de personnalisation.', 'consent-management'); ?></p>
   <?php }
 
   public static function field_text_color() {
     $s = self::get_settings(); ?>
     <div class="cmp410-color-control">
-      <input type="color" class="cmp410-color-picker" data-target="text_color" value="<?php echo esc_attr($s['text_color']); ?>" aria-label="<?php esc_attr_e('Choisir la couleur de texte par défaut', 'cmp'); ?>" />
+      <input type="color" class="cmp410-color-picker" data-target="text_color" value="<?php echo esc_attr($s['text_color']); ?>" aria-label="<?php esc_attr_e('Choisir la couleur de texte par défaut', 'consent-management'); ?>" />
       <input type="text" name="<?php echo esc_attr(self::OPTION_KEY); ?>[text_color]" value="<?php echo esc_attr($s['text_color']); ?>" class="regular-text cmp410-color-value" data-target="text_color" placeholder="#0b1621" pattern="^#[A-Fa-f0-9]{6}$" />
     </div>
-    <p class="description"><?php esc_html_e('Couleur de texte principale utilisée dans le bandeau et le modal.', 'cmp'); ?></p>
+    <p class="description"><?php esc_html_e('Couleur de texte principale utilisée dans le bandeau et le modal.', 'consent-management'); ?></p>
   <?php }
 
   public static function field_customize_btn_color() {
     $s = self::get_settings(); ?>
     <div class="cmp410-color-control">
-      <input type="color" class="cmp410-color-picker" data-target="customize_btn_color" value="<?php echo esc_attr($s['customize_btn_color']); ?>" aria-label="<?php esc_attr_e('Choisir la couleur du bouton Personnaliser', 'cmp'); ?>" />
+      <input type="color" class="cmp410-color-picker" data-target="customize_btn_color" value="<?php echo esc_attr($s['customize_btn_color']); ?>" aria-label="<?php esc_attr_e('Choisir la couleur du bouton Personnaliser', 'consent-management'); ?>" />
       <input type="text" name="<?php echo esc_attr(self::OPTION_KEY); ?>[customize_btn_color]" value="<?php echo esc_attr($s['customize_btn_color']); ?>" class="regular-text cmp410-color-value" data-target="customize_btn_color" placeholder="#f5f5f5" pattern="^#[A-Fa-f0-9]{6}$" />
     </div>
-    <p class="description"><?php esc_html_e('Couleur de fond du bouton Personnaliser (hex ex: #f5f5f5).', 'cmp'); ?></p>
+    <p class="description"><?php esc_html_e('Couleur de fond du bouton Personnaliser (hex ex: #f5f5f5).', 'consent-management'); ?></p>
   <?php }
 
   public static function field_customize_btn_text_color() {
     $s = self::get_settings(); ?>
     <div class="cmp410-color-control">
-      <input type="color" class="cmp410-color-picker" data-target="customize_btn_text_color" value="<?php echo esc_attr($s['customize_btn_text_color']); ?>" aria-label="<?php esc_attr_e('Choisir la couleur du texte “Personnaliser”', 'cmp'); ?>" />
+      <input type="color" class="cmp410-color-picker" data-target="customize_btn_text_color" value="<?php echo esc_attr($s['customize_btn_text_color']); ?>" aria-label="<?php esc_attr_e('Choisir la couleur du texte “Personnaliser”', 'consent-management'); ?>" />
       <input type="text" name="<?php echo esc_attr(self::OPTION_KEY); ?>[customize_btn_text_color]" value="<?php echo esc_attr($s['customize_btn_text_color']); ?>" class="regular-text cmp410-color-value" data-target="customize_btn_text_color" placeholder="#111111" pattern="^#[A-Fa-f0-9]{6}$" />
     </div>
-    <p class="description"><?php esc_html_e('Couleur du texte du bouton Personnaliser (hex ex: #111111).', 'cmp'); ?></p>
+    <p class="description"><?php esc_html_e('Couleur du texte du bouton Personnaliser (hex ex: #111111).', 'consent-management'); ?></p>
   <?php }
 
   public static function field_ttl_days() {
@@ -931,12 +861,12 @@ class CMP_410GONE {
 
   public static function field_debug() {
     $s = self::get_settings(); ?>
-    <label><input type="checkbox" name="<?php echo esc_attr(self::OPTION_KEY); ?>[debug]" value="1" <?php checked(1, (int)$s['debug']); ?> /> <?php esc_html_e('Activer les logs console', 'cmp'); ?></label>
+    <label><input type="checkbox" name="<?php echo esc_attr(self::OPTION_KEY); ?>[debug]" value="1" <?php checked(1, (int)$s['debug']); ?> /> <?php esc_html_e('Activer les logs console', 'consent-management'); ?></label>
   <?php }
 
   public static function field_force_show() {
     $s = self::get_settings(); ?>
-    <label><input type="checkbox" name="<?php echo esc_attr(self::OPTION_KEY); ?>[force_show]" value="1" <?php checked(1, (int)$s['force_show']); ?> /> <?php esc_html_e('Toujours afficher le bandeau (ignore le cookie)', 'cmp'); ?></label>
+    <label><input type="checkbox" name="<?php echo esc_attr(self::OPTION_KEY); ?>[force_show]" value="1" <?php checked(1, (int)$s['force_show']); ?> /> <?php esc_html_e('Toujours afficher le bandeau (ignore le cookie)', 'consent-management'); ?></label>
   <?php }
 
   public static function enqueue_assets() {
@@ -1020,17 +950,17 @@ class CMP_410GONE {
     $cookies = !empty($s['cookie_policy_url']) ? esc_url($s['cookie_policy_url']) : '';
     ?>
     <div class="cmp410-wrap" id="cmp410" aria-hidden="<?php echo esc_attr($aria_hidden); ?>">
-      <div class="cmp410-banner" role="dialog" aria-modal="true" aria-label="<?php esc_attr_e('Gestion des cookies', 'cmp'); ?>">
+      <div class="cmp410-banner" role="dialog" aria-modal="true" aria-label="<?php esc_attr_e('Gestion des cookies', 'consent-management'); ?>">
         <div class="cmp410-text">
           <div class="cmp410-title"><?php echo esc_html($s['banner_title']); ?></div>
           <div class="cmp410-desc">
             <?php echo wp_kses_post($s['banner_text']); ?>
               <?php if ($privacy): ?>
-                <a href="<?php echo esc_url($privacy); ?>" class="cmp410-link" target="_blank" rel="noopener noreferrer"><?php esc_html_e('Politique de confidentialité', 'cmp'); ?></a>
+                <a href="<?php echo esc_url($privacy); ?>" class="cmp410-link" target="_blank" rel="noopener noreferrer"><?php esc_html_e('Politique de confidentialité', 'consent-management'); ?></a>
               <?php endif; ?>
               <?php if ($cookies): ?>
                 <span class="cmp410-sep">·</span>
-                <a href="<?php echo esc_url($cookies); ?>" class="cmp410-link" target="_blank" rel="noopener noreferrer"><?php esc_html_e('Politique cookies', 'cmp'); ?></a>
+                <a href="<?php echo esc_url($cookies); ?>" class="cmp410-link" target="_blank" rel="noopener noreferrer"><?php esc_html_e('Politique cookies', 'consent-management'); ?></a>
               <?php endif; ?>
           </div>
         </div>
@@ -1042,16 +972,16 @@ class CMP_410GONE {
         </div>
       </div>
 
-      <div class="cmp410-modal" role="dialog" aria-modal="true" aria-label="<?php esc_attr_e('Préférences cookies', 'cmp'); ?>">
+      <div class="cmp410-modal" role="dialog" aria-modal="true" aria-label="<?php esc_attr_e('Préférences cookies', 'consent-management'); ?>">
         <div class="cmp410-modal-header">
           <div class="cmp410-modal-title"><?php echo esc_html($s['modal_title']); ?></div>
-          <button class="cmp410-x" data-cmp410="close" aria-label="<?php esc_attr_e('Fermer', 'cmp'); ?>">×</button>
+          <button class="cmp410-x" data-cmp410="close" aria-label="<?php esc_attr_e('Fermer', 'consent-management'); ?>">×</button>
         </div>
 
         <div class="cmp410-modal-body">
           <div class="cmp410-row">
             <div class="cmp410-row-text">
-              <div class="cmp410-row-title"><?php esc_html_e('Essentiels', 'cmp'); ?></div>
+              <div class="cmp410-row-title"><?php esc_html_e('Essentiels', 'consent-management'); ?></div>
               <div class="cmp410-row-desc"><?php echo esc_html($s['modal_desc_essentials']); ?></div>
             </div>
             <div class="cmp410-toggle">
@@ -1061,7 +991,7 @@ class CMP_410GONE {
 
           <div class="cmp410-row">
             <div class="cmp410-row-text">
-              <div class="cmp410-row-title"><?php esc_html_e('Analytics', 'cmp'); ?></div>
+              <div class="cmp410-row-title"><?php esc_html_e('Analytics', 'consent-management'); ?></div>
               <div class="cmp410-row-desc"><?php echo esc_html($s['modal_desc_analytics']); ?></div>
             </div>
             <div class="cmp410-toggle">
@@ -1071,7 +1001,7 @@ class CMP_410GONE {
 
           <div class="cmp410-row">
             <div class="cmp410-row-text">
-              <div class="cmp410-row-title"><?php esc_html_e('Retargeting', 'cmp'); ?></div>
+              <div class="cmp410-row-title"><?php esc_html_e('Retargeting', 'consent-management'); ?></div>
               <div class="cmp410-row-desc"><?php echo esc_html($s['modal_desc_retargeting']); ?></div>
             </div>
             <div class="cmp410-toggle">
@@ -1096,7 +1026,7 @@ class CMP_410GONE {
   }
 
   public static function shortcode_manage_cookies($atts) {
-    $atts = shortcode_atts(['label' => __('Gérer mes cookies', 'cmp')], $atts, 'cmp_manage_cookies');
+    $atts = shortcode_atts(['label' => __('Gérer mes cookies', 'consent-management')], $atts, 'cmp_manage_cookies');
     $label = esc_html($atts['label']);
     return '<a href="#" onclick="window.CMP410_open && window.CMP410_open(); return false;">' . $label . '</a>';
   }
@@ -1130,18 +1060,18 @@ class CMP_410GONE {
 
   private static function register_translation_strings($settings) {
     $fields = [
-      'banner_title' => __('Titre du bandeau', 'cmp'),
-      'banner_text' => __('Texte du bandeau', 'cmp'),
-      'btn_accept' => __('Bouton accepter', 'cmp'),
-      'btn_reject' => __('Bouton refuser', 'cmp'),
-      'btn_customize' => __('Bouton personnaliser', 'cmp'),
-      'btn_save' => __('Bouton enregistrer', 'cmp'),
-      'modal_title' => __('Titre popin personnalisation', 'cmp'),
-      'modal_desc_essentials' => __('Sous-titre essentiels', 'cmp'),
-      'modal_desc_analytics' => __('Sous-titre analytics', 'cmp'),
-      'modal_desc_retargeting' => __('Sous-titre retargeting', 'cmp'),
-      'privacy_url' => __('URL Politique de confidentialité', 'cmp'),
-      'cookie_policy_url' => __('URL Politique cookies', 'cmp'),
+      'banner_title' => __('Titre du bandeau', 'consent-management'),
+      'banner_text' => __('Texte du bandeau', 'consent-management'),
+      'btn_accept' => __('Bouton accepter', 'consent-management'),
+      'btn_reject' => __('Bouton refuser', 'consent-management'),
+      'btn_customize' => __('Bouton personnaliser', 'consent-management'),
+      'btn_save' => __('Bouton enregistrer', 'consent-management'),
+      'modal_title' => __('Titre popin personnalisation', 'consent-management'),
+      'modal_desc_essentials' => __('Sous-titre essentiels', 'consent-management'),
+      'modal_desc_analytics' => __('Sous-titre analytics', 'consent-management'),
+      'modal_desc_retargeting' => __('Sous-titre retargeting', 'consent-management'),
+      'privacy_url' => __('URL Politique de confidentialité', 'consent-management'),
+      'cookie_policy_url' => __('URL Politique cookies', 'consent-management'),
     ];
 
     foreach ($fields as $key => $label) {
