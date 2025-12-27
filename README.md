@@ -1,4 +1,4 @@
-=== Consent Management ===
+=== 410Gone Consent Manager for Google Consent Mode and GTM ===
 Contributors: 410gone
 Tags: consent, cookies, gtm, privacy
 Requires at least: 6.0
@@ -11,7 +11,7 @@ License URI: https://www.gnu.org/licenses/gpl-2.0.html
 CMP légère pour WordPress : bandeau cookies, Consent Mode v2, GTM, traductions Polylang/WPML.
 
 == Description ==
-Consent Management propose une CMP légère avec bandeau d'information, popin de personnalisation et compatibilité Google Consent Mode v2 + Google Tag Manager. Le plugin inclut des aperçus desktop/mobile dans l'admin, des réglages de design et de libellés, et une compatibilité multilingue (Polylang, WPML ou via filtre).
+410Gone Consent Manager for Google Consent Mode and GTM propose une CMP légère avec bandeau d'information, popin de personnalisation et compatibilité Google Consent Mode v2 + Google Tag Manager. Le plugin inclut des aperçus desktop/mobile dans l'admin, des réglages de design et de libellés, et une compatibilité multilingue (Polylang, WPML ou via filtre).
 
 == Fonctionnalités clés ==
 * Bannière et popin "Personnaliser" configurables (titres, textes, boutons, liens).
@@ -24,8 +24,8 @@ Consent Management propose une CMP légère avec bandeau d'information, popin de
 
 == Installation ==
 1. Copier le dossier du plugin dans `wp-content/plugins/` (ou compresser en zip puis installer via *Extensions → Ajouter → Téléverser*).
-2. Activer l'extension « Consent Management » depuis le tableau de bord WordPress.
-3. Ouvrir *Réglages → 🍪 Consent Management* pour configurer la CMP.
+2. Activer l'extension « ✨ 410Gone Consent Manager for Google Consent Mode and GTM » depuis le tableau de bord WordPress.
+3. Ouvrir *Réglages → 🍪 ✨ 410Gone Consent Manager* pour configurer la CMP.
 
 == Configuration ==
 === Design ===
@@ -51,12 +51,12 @@ Consent Management propose une CMP légère avec bandeau d'information, popin de
 4. **Autres plugins** : branchez-vous sur le filtre `cmp_410gone_translate_setting` pour fournir vos traductions personnalisées.
 
 == Utilisation front ==
-* La bannière et la popin sont injectées automatiquement (`wp_head`, `wp_body_open`, `wp_footer`).
+* La bannière et la popin sont injectées automatiquement (`wp_head`, `wp_footer`).
 * Le shortcode `[cmp_manage_cookies label="Gérer mes cookies"]` permet d'afficher un lien de gestion des cookies dans vos pages.
 * Les scripts tiers doivent être pilotés via GTM pour respecter les choix de consentement.
 
 == Dépannage ==
-* En cas d'optimisation JS (ex. WP Rocket), excluez `cmp.js`/`cmp-410gone` du « Delay JavaScript execution », puis purgez le cache.
+* En cas d'optimisation JS (ex. WP Rocket), excluez `cmp.js`/`410gone-consent-manager` du « Delay JavaScript execution », puis purgez le cache.
 * Activez le mode debug pour suivre le flux de consentement dans la console.
 
 Plus d'informations sur [tutoriel sur le site de 410 gone](https://www.410-gone.fr/blog/plugin-cmp-wordpress-gratuit-consent-mode-v2-gtm.html)

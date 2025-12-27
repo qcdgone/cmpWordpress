@@ -7,6 +7,7 @@ if (!defined('ABSPATH')) {
 class CMP_410GONE {
   const OPTION_KEY = 'cmp_410gone_settings';
   const COOKIE_NAME = 'cmp_consent';
+  const PAGE_SLUG = '410gone-consent-manager';
 
   private static function consent_mode_defaults() {
     return [
@@ -92,7 +93,6 @@ class CMP_410GONE {
 
     add_action('wp_head', [__CLASS__, 'output_consent_default_and_gtm'], 1);
 
-    add_action('wp_body_open', [__CLASS__, 'render_banner_markup'], 1);
     add_action('wp_footer', [__CLASS__, 'render_banner_markup'], 30);
 
     add_shortcode('cmp_manage_cookies', [__CLASS__, 'shortcode_manage_cookies']);
@@ -141,7 +141,7 @@ class CMP_410GONE {
   }
 
   public static function plugin_action_links($links) {
-    $settings_url = admin_url('options-general.php?page=cmp-410gone');
+    $settings_url = admin_url('options-general.php?page=' . self::PAGE_SLUG);
     return array_merge(['settings' => '<a href="' . esc_url($settings_url) . '">' . esc_html(__('Réglages', 'cmp')) . '</a>'], $links);
   }
 
@@ -160,7 +160,7 @@ class CMP_410GONE {
   }
 
   public static function admin_menu() {
-    add_options_page(__('🍪 Consent Management — Réglages', 'cmp'), __('🍪 Consent Management', 'cmp'), 'manage_options', 'cmp-410gone', [__CLASS__, 'settings_page']);
+    add_options_page(__('🍪 ✨ 410Gone Consent Manager — Réglages', 'cmp'), __('🍪 ✨ 410Gone Consent Manager', 'cmp'), 'manage_options', self::PAGE_SLUG, [__CLASS__, 'settings_page']);
   }
 
   public static function register_settings() {
@@ -170,30 +170,30 @@ class CMP_410GONE {
       'default' => self::defaults(),
     ]);
 
-    add_settings_section('cmp_410gone_design', __('Design', 'cmp'), [__CLASS__, 'section_design'], 'cmp-410gone');
-    add_settings_field('enable', __('Activer la CMP', 'cmp'), [__CLASS__, 'field_enable'], 'cmp-410gone', 'cmp_410gone_design');
-    add_settings_field('accept_btn_color', __('Couleur bouton “Accepter”', 'cmp'), [__CLASS__, 'field_accept_btn_color'], 'cmp-410gone', 'cmp_410gone_design');
-    add_settings_field('accept_btn_text_color', __('Couleur texte bouton “Accepter”', 'cmp'), [__CLASS__, 'field_accept_btn_text_color'], 'cmp-410gone', 'cmp_410gone_design');
-    add_settings_field('background_color', __('Couleur de fond', 'cmp'), [__CLASS__, 'field_background_color'], 'cmp-410gone', 'cmp_410gone_design');
-    add_settings_field('text_color', __('Couleur du texte', 'cmp'), [__CLASS__, 'field_text_color'], 'cmp-410gone', 'cmp_410gone_design');
-    add_settings_field('customize_btn_color', __('Couleur bouton “Personnaliser”', 'cmp'), [__CLASS__, 'field_customize_btn_color'], 'cmp-410gone', 'cmp_410gone_design');
-    add_settings_field('customize_btn_text_color', __('Couleur texte bouton “Personnaliser”', 'cmp'), [__CLASS__, 'field_customize_btn_text_color'], 'cmp-410gone', 'cmp_410gone_design');
+    add_settings_section('cmp_410gone_design', __('Design', 'cmp'), [__CLASS__, 'section_design'], self::PAGE_SLUG);
+    add_settings_field('enable', __('Activer la CMP', 'cmp'), [__CLASS__, 'field_enable'], self::PAGE_SLUG, 'cmp_410gone_design');
+    add_settings_field('accept_btn_color', __('Couleur bouton “Accepter”', 'cmp'), [__CLASS__, 'field_accept_btn_color'], self::PAGE_SLUG, 'cmp_410gone_design');
+    add_settings_field('accept_btn_text_color', __('Couleur texte bouton “Accepter”', 'cmp'), [__CLASS__, 'field_accept_btn_text_color'], self::PAGE_SLUG, 'cmp_410gone_design');
+    add_settings_field('background_color', __('Couleur de fond', 'cmp'), [__CLASS__, 'field_background_color'], self::PAGE_SLUG, 'cmp_410gone_design');
+    add_settings_field('text_color', __('Couleur du texte', 'cmp'), [__CLASS__, 'field_text_color'], self::PAGE_SLUG, 'cmp_410gone_design');
+    add_settings_field('customize_btn_color', __('Couleur bouton “Personnaliser”', 'cmp'), [__CLASS__, 'field_customize_btn_color'], self::PAGE_SLUG, 'cmp_410gone_design');
+    add_settings_field('customize_btn_text_color', __('Couleur texte bouton “Personnaliser”', 'cmp'), [__CLASS__, 'field_customize_btn_text_color'], self::PAGE_SLUG, 'cmp_410gone_design');
 
-    add_settings_section('cmp_410gone_labels', __('Libellé', 'cmp'), [__CLASS__, 'section_labels'], 'cmp-410gone');
-    add_settings_field('privacy_url', __('URL Politique de confidentialité', 'cmp'), [__CLASS__, 'field_privacy_url'], 'cmp-410gone', 'cmp_410gone_labels');
-    add_settings_field('cookie_policy_url', __('URL Politique cookies (optionnel)', 'cmp'), [__CLASS__, 'field_cookie_policy_url'], 'cmp-410gone', 'cmp_410gone_labels');
-    add_settings_field('banner_title', __('Titre du bandeau', 'cmp'), [__CLASS__, 'field_banner_title'], 'cmp-410gone', 'cmp_410gone_labels');
-    add_settings_field('banner_text', __('Texte du bandeau', 'cmp'), [__CLASS__, 'field_banner_text'], 'cmp-410gone', 'cmp_410gone_labels');
-    add_settings_field('btn_labels', __('Libellés des boutons', 'cmp'), [__CLASS__, 'field_btn_labels'], 'cmp-410gone', 'cmp_410gone_labels');
-    add_settings_field('modal_labels', __('Libellés de la popin', 'cmp'), [__CLASS__, 'field_modal_labels'], 'cmp-410gone', 'cmp_410gone_labels');
+    add_settings_section('cmp_410gone_labels', __('Libellé', 'cmp'), [__CLASS__, 'section_labels'], self::PAGE_SLUG);
+    add_settings_field('privacy_url', __('URL Politique de confidentialité', 'cmp'), [__CLASS__, 'field_privacy_url'], self::PAGE_SLUG, 'cmp_410gone_labels');
+    add_settings_field('cookie_policy_url', __('URL Politique cookies (optionnel)', 'cmp'), [__CLASS__, 'field_cookie_policy_url'], self::PAGE_SLUG, 'cmp_410gone_labels');
+    add_settings_field('banner_title', __('Titre du bandeau', 'cmp'), [__CLASS__, 'field_banner_title'], self::PAGE_SLUG, 'cmp_410gone_labels');
+    add_settings_field('banner_text', __('Texte du bandeau', 'cmp'), [__CLASS__, 'field_banner_text'], self::PAGE_SLUG, 'cmp_410gone_labels');
+    add_settings_field('btn_labels', __('Libellés des boutons', 'cmp'), [__CLASS__, 'field_btn_labels'], self::PAGE_SLUG, 'cmp_410gone_labels');
+    add_settings_field('modal_labels', __('Libellés de la popin', 'cmp'), [__CLASS__, 'field_modal_labels'], self::PAGE_SLUG, 'cmp_410gone_labels');
 
-    add_settings_section('cmp_410gone_tracking', __('Tracking & configuration', 'cmp'), [__CLASS__, 'section_tracking'], 'cmp-410gone');
-    add_settings_field('gtm_id', 'GTM Container ID', [__CLASS__, 'field_gtm_id'], 'cmp-410gone', 'cmp_410gone_tracking');
-    add_settings_field('consent_wait_for_update_ms', __('Consent wait_for_update (ms)', 'cmp'), [__CLASS__, 'field_wait'], 'cmp-410gone', 'cmp_410gone_tracking');
-    add_settings_section('cmp_410gone_advanced', __('Avancé', 'cmp'), [__CLASS__, 'section_advanced'], 'cmp-410gone');
-    add_settings_field('ttl_days', __('Durée de conservation du choix (jours)', 'cmp'), [__CLASS__, 'field_ttl_days'], 'cmp-410gone', 'cmp_410gone_advanced');
-    add_settings_field('debug', __('Debug console', 'cmp'), [__CLASS__, 'field_debug'], 'cmp-410gone', 'cmp_410gone_advanced');
-    add_settings_field('force_show', __('Forcer l’affichage (test)', 'cmp'), [__CLASS__, 'field_force_show'], 'cmp-410gone', 'cmp_410gone_advanced');
+    add_settings_section('cmp_410gone_tracking', __('Tracking & configuration', 'cmp'), [__CLASS__, 'section_tracking'], self::PAGE_SLUG);
+    add_settings_field('gtm_id', 'GTM Container ID', [__CLASS__, 'field_gtm_id'], self::PAGE_SLUG, 'cmp_410gone_tracking');
+    add_settings_field('consent_wait_for_update_ms', __('Consent wait_for_update (ms)', 'cmp'), [__CLASS__, 'field_wait'], self::PAGE_SLUG, 'cmp_410gone_tracking');
+    add_settings_section('cmp_410gone_advanced', __('Avancé', 'cmp'), [__CLASS__, 'section_advanced'], self::PAGE_SLUG);
+    add_settings_field('ttl_days', __('Durée de conservation du choix (jours)', 'cmp'), [__CLASS__, 'field_ttl_days'], self::PAGE_SLUG, 'cmp_410gone_advanced');
+    add_settings_field('debug', __('Debug console', 'cmp'), [__CLASS__, 'field_debug'], self::PAGE_SLUG, 'cmp_410gone_advanced');
+    add_settings_field('force_show', __('Forcer l’affichage (test)', 'cmp'), [__CLASS__, 'field_force_show'], self::PAGE_SLUG, 'cmp_410gone_advanced');
   }
 
   public static function sanitize_settings($in) {
@@ -289,7 +289,7 @@ class CMP_410GONE {
       return;
     }
 
-    $page = 'cmp-410gone';
+    $page = self::PAGE_SLUG;
 
     // Fallback in case hooks didn’t register sections (e.g., custom admin flows).
     if (empty($GLOBALS['wp_settings_sections'][$page])) {
@@ -297,7 +297,7 @@ class CMP_410GONE {
     }
     ?>
     <div class="wrap cmp410-admin">
-      <h1><?php esc_html_e('🍪 Consent Management — Réglages', 'cmp'); ?></h1>
+      <h1><?php esc_html_e('🍪 ✨ 410Gone Consent Manager — Réglages', 'cmp'); ?></h1>
       <p><a href="https://www.410-gone.fr" target="_blank" rel="noopener noreferrer">410gone</a></p>
 
       <style>
@@ -544,7 +544,7 @@ class CMP_410GONE {
       <div class="cmp410-callout">
         <strong><?php esc_html_e('WP Rocket (recommandé) :', 'cmp'); ?></strong>
         <ul style="margin:8px 0 0 18px;">
-          <li><?php esc_html_e('Optimiser les fichiers → JavaScript → Exclure cmp.js (ou cmp-410gone) de “Delay JavaScript execution”.', 'cmp'); ?></li>
+          <li><?php esc_html_e('Optimiser les fichiers → JavaScript → Exclure cmp.js (ou 410gone-consent-manager) de “Delay JavaScript execution”.', 'cmp'); ?></li>
           <li><?php esc_html_e('Puis : purge WP Rocket + Ctrl+F5 (ou navigation privée).', 'cmp'); ?></li>
         </ul>
       </div>
