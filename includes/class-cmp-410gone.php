@@ -19,11 +19,12 @@ class CMP_410GONE {
   }
 
   private static function has_consent_cookie() {
-    if (empty($_COOKIE[self::COOKIE_NAME])) {
+    $raw = filter_input(INPUT_COOKIE, self::COOKIE_NAME, FILTER_UNSAFE_RAW);
+    if (empty($raw)) {
       return false;
     }
 
-    $raw = wp_unslash((string)$_COOKIE[self::COOKIE_NAME]);
+    $raw = wp_kses(wp_unslash((string)$raw), []);
     $data = json_decode($raw, true);
 
     if (!is_array($data)) {
@@ -51,11 +52,12 @@ class CMP_410GONE {
   private static function consent_mode_from_cookie() {
     $defaults = self::consent_mode_defaults();
 
-    if (empty($_COOKIE[self::COOKIE_NAME])) {
+    $raw = filter_input(INPUT_COOKIE, self::COOKIE_NAME, FILTER_UNSAFE_RAW);
+    if (empty($raw)) {
       return $defaults;
     }
 
-    $raw = wp_unslash((string)$_COOKIE[self::COOKIE_NAME]);
+    $raw = wp_kses(wp_unslash((string)$raw), []);
     $data = json_decode($raw, true);
 
     if (!is_array($data)) {
