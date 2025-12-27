@@ -160,7 +160,7 @@ class CMP_410GONE {
   }
 
   public static function admin_menu() {
-    add_options_page(__('🍪 ✨ 410Gone Consent Manager — Réglages', 'cmp'), __('🍪 ✨ 410Gone Consent Manager', 'cmp'), 'manage_options', self::PAGE_SLUG, [__CLASS__, 'settings_page']);
+    add_options_page(__('🍪 410Gone Consent Manager — Réglages', 'cmp'), __('🍪 410Gone Consent Manager', 'cmp'), 'manage_options', self::PAGE_SLUG, [__CLASS__, 'settings_page']);
   }
 
   public static function register_settings() {
@@ -297,7 +297,7 @@ class CMP_410GONE {
     }
     ?>
     <div class="wrap cmp410-admin">
-      <h1><?php esc_html_e('🍪 ✨ 410Gone Consent Manager — Réglages', 'cmp'); ?></h1>
+      <h1><?php esc_html_e('🍪 410Gone Consent Manager — Réglages', 'cmp'); ?></h1>
       <p><a href="https://www.410-gone.fr" target="_blank" rel="noopener noreferrer">410gone</a></p>
 
       <style>

@@ -4,7 +4,7 @@
  * Plugin URI: https://www.410-gone.fr
  * Description: CMP locale (Accepter / Refuser / Personnaliser) avec Google Consent Mode v2 + GTM (Variante A2).
  * Version: 1.3.0
- * Author: 410gone
+ * Author: 410 Gone
  ls
  *
  * License: GPLv2 or later

@@ -24,8 +24,8 @@ CMP légère pour WordPress : bandeau cookies, Consent Mode v2, GTM, traductions
 
 == Installation ==
 1. Copier le dossier du plugin dans `wp-content/plugins/` (ou compresser en zip puis installer via *Extensions → Ajouter → Téléverser*).
-2. Activer l'extension « ✨ 410Gone Consent Manager for Google Consent Mode and GTM » depuis le tableau de bord WordPress.
-3. Ouvrir *Réglages → 🍪 ✨ 410Gone Consent Manager* pour configurer la CMP.
+2. Activer l'extension « 410Gone Consent Manager for Google Consent Mode and GTM » depuis le tableau de bord WordPress.
+3. Ouvrir *Réglages → 🍪 410Gone Consent Manager* pour configurer la CMP.
 
 == Configuration ==
 === Design ===
