@@ -5,7 +5,7 @@
  * Description: CMP locale (Accepter / Refuser / Personnaliser) avec Google Consent Mode v2 + GTM.
  * Version: 1.3.0
  * Author: 410 Gone
- ls
+ *  Author URI: https://www.410-gone.fr
  *
  * License: GPLv2 or later
  * Text Domain: cmp
