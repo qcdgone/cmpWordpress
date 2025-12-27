@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: 410Gone Consent Manager for Google Consent Mode and GTM
- * Plugin URI: https://www.410-gone.fr
+ * Plugin URI: https://www.410-gone.fr/blog/plugin-cmp-wordpress-gratuit-consent-mode-v2-gtm.html
  * Description: CMP locale (Accepter / Refuser / Personnaliser) avec Google Consent Mode v2 + GTM.
  * Version: 1.3.0
  * Author: 410 Gone
