@@ -25,9 +25,9 @@ class CMP410GONE_Manager {
   }
 
   private static function get_raw_consent_cookie() {
-    $raw = filter_input(INPUT_COOKIE, self::COOKIE_NAME, FILTER_UNSAFE_RAW);
+    $raw = filter_input(INPUT_COOKIE, self::COOKIE_NAME, FILTER_SANITIZE_SPECIAL_CHARS);
     if (empty($raw)) {
-      $raw = filter_input(INPUT_COOKIE, self::LEGACY_COOKIE_NAME, FILTER_UNSAFE_RAW);
+      $raw = filter_input(INPUT_COOKIE, self::LEGACY_COOKIE_NAME, FILTER_SANITIZE_SPECIAL_CHARS);
     }
 
     return $raw;
