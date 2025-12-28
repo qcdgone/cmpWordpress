@@ -12,6 +12,7 @@ Lightweight CMP for WordPress: cookie banner, Consent Mode v2, GTM, Polylang/WPM
 
 == Description ==
 410Gone Consent Manager for Google Consent Mode and GTM is a lightweight CMP with a cookie banner, customization modal, and Google Consent Mode v2 + Google Tag Manager compatibility. It includes desktop/mobile previews in the admin, design and label settings, and multilingual support (Polylang, WPML, or via filter).
+You can find the documentation in french for the plugin here : [Official website for the consent managemet wordpress plugin(FR)](https://www.410-gone.fr/blog/plugin-cmp-wordpress-gratuit-consent-mode-v2-gtm.html)
 
 == Key features ==
 * Configurable banner and “Customize” modal (titles, texts, buttons, links).
@@ -54,6 +55,17 @@ Lightweight CMP for WordPress: cookie banner, Consent Mode v2, GTM, Polylang/WPM
 * The banner and modal are injected automatically (`wp_head`, `wp_footer`).
 * The shortcode `[cmp410gone_manage_cookies label="Manage my cookies"]` displays a management link.
 * Third-party scripts should be controlled via GTM to respect consent choices.
+
+== Screenshots ==
+1. Plugin backend display a preview for the banner and the customize popin
+2. You can custmize the color for the button and the text used in the plugin, you can find more documentation here: https://www.410-gone.fr/blog/plugin-cmp-wordpress-gratuit-consent-mode-v2-gtm.html
+3. Everything can be translated.
+4. Complete translation setup using [polylang](https://fr.wordpress.org/plugins/polylang/) (for example, wpml is also available)
+
+
+== Changelog ==
+= 1.4.2 =
+* Initial release.
 
 == External services ==
 This plugin can load Google Tag Manager when you provide a GTM Container ID in the settings.
