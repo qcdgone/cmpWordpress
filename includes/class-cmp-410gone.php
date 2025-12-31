@@ -147,6 +147,7 @@ class CMP410GONE_Manager {
 
       'debug' => 0,
       'force_show' => 0,
+      'overlay_mode' => 'inline',
     ];
   }
 
@@ -215,6 +216,7 @@ class CMP410GONE_Manager {
     add_settings_field('ttl_days', __('Consent retention (days)', '410gone-consent-manager'), [__CLASS__, 'field_ttl_days'], self::PAGE_SLUG, 'cmp410gone_advanced');
     add_settings_field('debug', __('Debug console', '410gone-consent-manager'), [__CLASS__, 'field_debug'], self::PAGE_SLUG, 'cmp410gone_advanced');
     add_settings_field('force_show', __('Force display (testing)', '410gone-consent-manager'), [__CLASS__, 'field_force_show'], self::PAGE_SLUG, 'cmp410gone_advanced');
+    add_settings_field('overlay_mode', __('Overlay blocking timing', '410gone-consent-manager'), [__CLASS__, 'field_overlay_mode'], self::PAGE_SLUG, 'cmp410gone_advanced');
   }
 
   public static function sanitize_settings($in) {
@@ -224,6 +226,11 @@ class CMP410GONE_Manager {
     $out['enable'] = isset($in['enable']) ? (int)!!$in['enable'] : $d['enable'];
     $out['debug']  = isset($in['debug']) ? (int)!!$in['debug'] : $d['debug'];
     $out['force_show'] = isset($in['force_show']) ? (int)!!$in['force_show'] : $d['force_show'];
+    $overlay_mode = isset($in['overlay_mode']) ? sanitize_key((string)$in['overlay_mode']) : $d['overlay_mode'];
+    if (!in_array($overlay_mode, ['inline', 'js'], true)) {
+      $overlay_mode = $d['overlay_mode'];
+    }
+    $out['overlay_mode'] = $overlay_mode;
 
     $gtm = isset($in['gtm_id']) ? strtoupper(trim((string)$in['gtm_id'])) : '';
     if ($gtm !== '' && !preg_match('/^GTM-[A-Z0-9]+$/', $gtm)) {
@@ -663,6 +670,16 @@ class CMP410GONE_Manager {
     <label><input type="checkbox" name="<?php echo esc_attr(self::OPTION_KEY); ?>[force_show]" value="1" <?php checked(1, (int)$s['force_show']); ?> /> <?php esc_html_e('Always show the banner (ignore cookie)', '410gone-consent-manager'); ?></label>
   <?php }
 
+  public static function field_overlay_mode() {
+    $s = self::get_settings();
+    ?>
+    <select name="<?php echo esc_attr(self::OPTION_KEY); ?>[overlay_mode]">
+      <option value="inline" <?php selected($s['overlay_mode'], 'inline'); ?>><?php esc_html_e('Apply overlay immediately (inline CSS)', '410gone-consent-manager'); ?></option>
+      <option value="js" <?php selected($s['overlay_mode'], 'js'); ?>><?php esc_html_e('Apply overlay after JavaScript', '410gone-consent-manager'); ?></option>
+    </select>
+    <p class="description"><?php esc_html_e('Controls when the background overlay blocks clicks outside the banner.', '410gone-consent-manager'); ?></p>
+  <?php }
+
   public static function enqueue_head_scripts() {
     $s = self::get_settings();
     $consent_defaults = self::consent_mode_from_cookie();
@@ -698,8 +715,12 @@ class CMP410GONE_Manager {
 
     wp_enqueue_style(self::SCRIPT_HANDLE, $url . 'assets/cmp.css', [], $css_ver);
 
+    $overlay_active = false;
+    $overlay_bg = $overlay_active ? 'rgba(0,0,0,.35)' : 'transparent';
+    $overlay_pe = $overlay_active ? 'auto' : 'none';
+    $overlay_display = $overlay_active ? 'block' : 'none';
     $inline = sprintf(
-      ':root{--cmp410-accept-bg:%s;--cmp410-accept-fg:%s;--cmp410-customize-bg:%s;--cmp410-customize-fg:%s;--cmp410-surface:%s;--cmp410-text:%s;--cmp410-background:%s;--cmp410-foreground:%s;}',
+      ':root{--cmp410-accept-bg:%s;--cmp410-accept-fg:%s;--cmp410-customize-bg:%s;--cmp410-customize-fg:%s;--cmp410-surface:%s;--cmp410-text:%s;--cmp410-background:%s;--cmp410-foreground:%s;--cmp410-overlay-bg:%s;--cmp410-overlay-pe:%s;--cmp410-overlay-display:%s;}',
       esc_html($s['accept_btn_color']),
       esc_html($s['accept_btn_text_color']),
       esc_html($s['customize_btn_color']),
@@ -707,7 +728,10 @@ class CMP410GONE_Manager {
       esc_html($s['background_color']),
       esc_html($s['text_color']),
       esc_html($s['background_color']),
-      esc_html($s['text_color'])
+      esc_html($s['text_color']),
+      $overlay_bg,
+      $overlay_pe,
+      $overlay_display
     );
     wp_add_inline_style(self::SCRIPT_HANDLE, $inline);
 
@@ -721,6 +745,7 @@ class CMP410GONE_Manager {
       'cookiePolicyUrl' => esc_url_raw($s['cookie_policy_url']),
       'debug' => (bool)$s['debug'],
       'forceShow' => (bool)$s['force_show'],
+      'overlayMode' => $s['overlay_mode'],
     ]);
   }
 
@@ -743,6 +768,7 @@ class CMP410GONE_Manager {
     $cookies = !empty($s['cookie_policy_url']) ? esc_url($s['cookie_policy_url']) : '';
     ?>
     <div class="cmp410-wrap" id="cmp410" aria-hidden="<?php echo esc_attr($aria_hidden); ?>">
+      <div class="cmp410-overlay" aria-hidden="true"></div>
       <div class="cmp410-banner" role="dialog" aria-modal="true" aria-label="<?php esc_attr_e('Cookie management', '410gone-consent-manager'); ?>">
         <div class="cmp410-text">
           <div class="cmp410-title"><?php echo esc_html($s['banner_title']); ?></div>

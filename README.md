@@ -1,5 +1,5 @@
 === 410Gone Consent Manager for Google Consent Mode and GTM ===
-Contributors: pvalibus, 410gone
+Contributors: pvalibus
 Tags: consent, cookies, gtm, privacy
 Requires at least: 6.0
 Tested up to: 6.9
@@ -57,13 +57,15 @@ You can find the documentation in french for the plugin here : [Official website
 * Third-party scripts should be controlled via GTM to respect consent choices.
 
 == Screenshots ==
-1. Plugin backend display a preview for the banner and the customize popin
-2. You can custmize the color for the button and the text used in the plugin, you can find more documentation here: https://www.410-gone.fr/blog/plugin-cmp-wordpress-gratuit-consent-mode-v2-gtm.html
+1. Plugin backend display a preview for the banner and the customize popin.
+2. You can customize the color for the button and the text used in the plugin, you can find more documentation here: https://www.410-gone.fr/blog/plugin-cmp-wordpress-gratuit-consent-mode-v2-gtm.html .
 3. Everything can be translated.
-4. Complete translation setup using [polylang](https://fr.wordpress.org/plugins/polylang/) (for example, wpml is also available)
+4. Complete translation setup using polylang (for example, wpml is also available)
 
 
 == Changelog ==
+= 1.5.0 =
+Add configuration and switch to default overlayoff if no javascript (SEO enhancement for bot crawling)
 = 1.4.2 =
 * Initial release.
 

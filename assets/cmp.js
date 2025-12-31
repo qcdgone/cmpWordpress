@@ -7,8 +7,10 @@
   function log(...args) {
     if (CFG.debug) console.log('[CMP410GONE]', ...args);
   }
-
+  const OVERLAY_MODE = CFG.overlayMode || 'inline';
+  const OVERLAY_ENABLED = true;
   const $wrap = document.getElementById('cmp410');
+
   if (!$wrap) {
     log('wrap not found');
     return;
@@ -99,6 +101,7 @@
     $wrap.classList.add('is-open');
     $banner.style.display = 'flex';
     $modal.style.display = 'none';
+    applyOverlay(true);
     log('showBanner');
   }
 
@@ -107,6 +110,7 @@
     $wrap.classList.remove('is-open');
     $banner.style.display = 'none';
     $modal.style.display = 'none';
+    applyOverlay(false);
     log('hideAll');
   }
 
@@ -115,12 +119,34 @@
     $wrap.classList.add('is-open');
     $banner.style.display = 'none';
     $modal.style.display = 'block';
+    applyOverlay(true);
     log('openModal');
   }
 
   function closeModal() {
     if (getConsent() && !CFG.forceShow) hideAll();
     else showBanner();
+  }
+
+  function applyOverlay(active) {
+    if (!OVERLAY_ENABLED) {
+      $wrap.style.setProperty('--cmp410-overlay-bg', 'transparent');
+      $wrap.style.setProperty('--cmp410-overlay-pe', 'none');
+      $wrap.style.setProperty('--cmp410-overlay-display', 'none');
+      return;
+    }
+    if (OVERLAY_MODE !== 'js') {
+      return;
+    }
+    if (active) {
+      $wrap.style.setProperty('--cmp410-overlay-bg', 'rgba(0,0,0,.35)');
+      $wrap.style.setProperty('--cmp410-overlay-pe', 'auto');
+      $wrap.style.setProperty('--cmp410-overlay-display', 'block');
+    } else {
+      $wrap.style.setProperty('--cmp410-overlay-bg', 'transparent');
+      $wrap.style.setProperty('--cmp410-overlay-pe', 'none');
+      $wrap.style.setProperty('--cmp410-overlay-display', 'none');
+    }
   }
 
   function gtagConsentUpdate(consent) {
