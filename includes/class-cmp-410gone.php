@@ -25,23 +25,64 @@ class CMP410GONE_Manager {
   }
 
   private static function get_raw_consent_cookie() {
-    $raw = filter_input(INPUT_COOKIE, self::COOKIE_NAME, FILTER_SANITIZE_SPECIAL_CHARS);
-    if (empty($raw)) {
-      $raw = filter_input(INPUT_COOKIE, self::LEGACY_COOKIE_NAME, FILTER_SANITIZE_SPECIAL_CHARS);
+    $raw = filter_input(INPUT_COOKIE, self::COOKIE_NAME, FILTER_UNSAFE_RAW);
+    if (null === $raw || false === $raw) {
+      $raw = $_COOKIE[self::COOKIE_NAME] ?? '';
     }
 
-    return $raw;
+    if (empty($raw)) {
+      $raw = filter_input(INPUT_COOKIE, self::LEGACY_COOKIE_NAME, FILTER_UNSAFE_RAW);
+      if (null === $raw || false === $raw) {
+        $raw = $_COOKIE[self::LEGACY_COOKIE_NAME] ?? '';
+      }
+    }
+
+    if (empty($raw)) {
+      return $raw;
+    }
+
+    return rawurldecode((string)$raw);
+  }
+
+  private static function parse_consent_cookie() {
+    $raw = self::get_raw_consent_cookie();
+    if (empty($raw)) {
+      return null;
+    }
+
+    $candidates = [
+      (string)$raw,
+      wp_unslash((string)$raw),
+      rawurldecode((string)$raw),
+      urldecode((string)$raw),
+    ];
+
+    foreach ($candidates as $candidate) {
+      $value = trim((string)$candidate);
+      if ($value === '') {
+        continue;
+      }
+
+      $len = strlen($value);
+      if ($len >= 2) {
+        $first = $value[0];
+        $last = $value[$len - 1];
+        if (($first === '"' && $last === '"') || ($first === "'" && $last === "'")) {
+          $value = substr($value, 1, -1);
+        }
+      }
+
+      $data = json_decode($value, true);
+      if (is_array($data)) {
+        return $data;
+      }
+    }
+
+    return null;
   }
 
   private static function has_consent_cookie() {
-    $raw = self::get_raw_consent_cookie();
-    if (empty($raw)) {
-      return false;
-    }
-
-    $raw = wp_kses(wp_unslash((string)$raw), []);
-    $data = json_decode($raw, true);
-
+    $data = self::parse_consent_cookie();
     if (!is_array($data)) {
       return false;
     }
@@ -66,15 +107,7 @@ class CMP410GONE_Manager {
 
   private static function consent_mode_from_cookie() {
     $defaults = self::consent_mode_defaults();
-
-    $raw = self::get_raw_consent_cookie();
-    if (empty($raw)) {
-      return $defaults;
-    }
-
-    $raw = wp_kses(wp_unslash((string)$raw), []);
-    $data = json_decode($raw, true);
-
+    $data = self::parse_consent_cookie();
     if (!is_array($data)) {
       return $defaults;
     }
