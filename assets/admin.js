@@ -69,4 +69,21 @@ document.addEventListener('DOMContentLoaded', function () {
       });
     });
   });
+
+  const trackingSelect = document.querySelector('select[name="cmp410gone_settings[tracking_mode]"]');
+  const trackingLegends = document.querySelectorAll('.cmp410-tracking-legend');
+
+  function updateTrackingLegend() {
+    if (!trackingSelect || !trackingLegends.length) {
+      return;
+    }
+    trackingLegends.forEach(function (legend) {
+      legend.classList.toggle('is-active', legend.id === trackingSelect.value);
+    });
+  }
+
+  if (trackingSelect) {
+    trackingSelect.addEventListener('change', updateTrackingLegend);
+    updateTrackingLegend();
+  }
 });

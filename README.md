@@ -4,7 +4,7 @@ Tags: consent, cookies, gtm, privacy
 Requires at least: 6.0
 Tested up to: 6.9
 Requires PHP: 7.4
-Stable Tag: 1.5.0
+Stable Tag: 1.6.0
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -19,6 +19,7 @@ You can find the documentation in french for the plugin here : [Official website
 * Editable palette (background, default text, accept/customize buttons) with color pickers.
 * Live desktop/mobile preview in the admin.
 * Automatic dataLayer/consent default injection in the `<head>` and conditional GTM loading.
+* Tracking modes for analytics loading: all inclusive, hybrid, or GTM-only.
 * Shortcode `[cmp410gone_manage_cookies]` to display a “Manage my cookies” link in content.
 * Translation-ready for Polylang/WPML, with the `cmp410gone_translate_setting` filter for other multilingual plugins.
 * Advanced options: consent retention, debug console, force display for testing.
@@ -38,7 +39,9 @@ You can find the documentation in french for the plugin here : [Official website
 * Add privacy policy and cookie policy URLs.
 
 === Tracking & configuration ===
+* Choose the tracking mode (all inclusive, hybrid, GTM-only).
 * Enter the GTM container ID (e.g. `GTM-XXXXXXX`).
+* Add the GA4 measurement ID if needed (e.g. `G-XXXXXXXXXX`).
 * Adjust `wait_for_update` (ms) for the consent default if needed.
 
 === Advanced ===
@@ -64,6 +67,10 @@ You can find the documentation in french for the plugin here : [Official website
 
 
 == Changelog ==
+= 1.6.0 =
+* Added tracking modes for analytics loading (all inclusive, hybrid, GTM-only).
+* Added GA4 measurement ID configuration in settings.
+* Improved consent flow to trigger page_view after consent without reload.
 = 1.5.0 =
 Add configuration and switch to default overlayoff if no javascript (SEO enhancement for bot crawling)
 = 1.4.2 =

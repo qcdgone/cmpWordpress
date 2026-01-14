@@ -28,6 +28,11 @@
     ad_user_data: 'denied',
     ad_personalization: 'denied'
   };
+  const TRACKING_MODE = CFG.trackingMode || 'hybrid';
+  const GTM_ID = (CFG.gtmId || '').trim();
+  const GA4_ID = (CFG.ga4Id || '').trim();
+  let gtmLoaded = false;
+  let gtagLoaded = false;
 
   function setCookie(name, value, days) {
     const d = new Date();
@@ -149,7 +154,7 @@
     }
   }
 
-  function gtagConsentUpdate(consent) {
+  function gtagConsentUpdate(consent, previous) {
     const c = normalizeConsent(consent);
     window.dataLayer = window.dataLayer || [];
 
@@ -165,11 +170,56 @@
       cmp410gone_retargeting: c.ad_storage === 'granted'
     });
 
+    if (c.analytics_storage === 'granted') {
+      window.dataLayer.push({
+        event: 'ga4_after_consent'
+      });
+    }
+
+    maybeLoadGtag(c);
+    maybeLoadGtm(c);
+
+    if (c.analytics_storage === 'granted' && (!previous || previous.analytics_storage !== 'granted')) {
+      if (typeof window.gtag === 'function') {
+        window.gtag('event', 'page_view');
+      } else {
+        window.dataLayer.push({ event: 'page_view' });
+      }
+    }
     log('consent update', c);
   }
 
-  function applyConsent(consent) {
-    gtagConsentUpdate(consent || CONSENT_DEFAULT);
+  function maybeLoadGtag(consent) {
+    if (gtagLoaded || !GA4_ID) return;
+    if (TRACKING_MODE !== 'all_inclusive') return;
+    if (!consent || consent.analytics_storage !== 'granted') return;
+    gtagLoaded = true;
+
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push(['js', new Date()]);
+    window.dataLayer.push(['config', GA4_ID]);
+
+    const script = document.createElement('script');
+    script.async = true;
+    script.src = `https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(GA4_ID)}`;
+    document.head.appendChild(script);
+  }
+
+  function maybeLoadGtm(consent) {
+    if (gtmLoaded || !GTM_ID) return;
+    if (TRACKING_MODE === 'gtm') return;
+    if (TRACKING_MODE === 'all_inclusive' && (!consent || consent.analytics_storage !== 'granted')) return;
+    gtmLoaded = true;
+
+    window.dataLayer = window.dataLayer || [];
+    const script = document.createElement('script');
+    script.async = true;
+    script.src = `https://www.googletagmanager.com/gtm.js?id=${encodeURIComponent(GTM_ID)}`;
+    document.head.appendChild(script);
+  }
+
+  function applyConsent(consent, previous) {
+    gtagConsentUpdate(consent || CONSENT_DEFAULT, previous);
   }
 
   function syncUIFromConsent(consent) {
@@ -180,6 +230,7 @@
 
 
   function acceptAll() {
+    const previous = getConsent();
     const consent = {
       analytics_storage: 'granted',
       ad_storage: 'granted',
@@ -187,18 +238,20 @@
       ad_personalization: 'granted'
     };
     setConsent(consent);
-    applyConsent(consent);
+    applyConsent(consent, previous);
     hideAll();
   }
 
   function rejectAll() {
+    const previous = getConsent();
     const consent = { ...CONSENT_DEFAULT };
     setConsent(consent);
-    applyConsent(consent);
+    applyConsent(consent, previous);
     hideAll();
   }
 
   function saveCustom() {
+    const previous = getConsent();
     const consent = {
       analytics_storage: $analytics.checked ? 'granted' : 'denied',
       ad_storage: $retargeting.checked ? 'granted' : 'denied',
@@ -206,7 +259,7 @@
       ad_personalization: $retargeting.checked ? 'granted' : 'denied'
     };
     setConsent(consent);
-    applyConsent(consent);
+    applyConsent(consent, previous);
     hideAll();
   }
 
@@ -243,7 +296,7 @@
   } else if (!existing) {
     showBanner();
   } else {
-    applyConsent(existing);
+    applyConsent(existing, existing);
     hideAll();
   }
 

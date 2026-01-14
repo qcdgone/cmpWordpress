@@ -153,7 +153,10 @@ class CMP410GONE_Manager {
       'enable' => 1,
 
       'gtm_id' => '',
+      'ga4_id' => '',
       'consent_wait_for_update_ms' => 500,
+      'init_datalayer' => 1,
+      'tracking_mode' => 'hybrid',
 
       'privacy_url' => '',
       'cookie_policy_url' => '',
@@ -243,8 +246,11 @@ class CMP410GONE_Manager {
     add_settings_field('modal_labels', __('Modal labels', '410gone-consent-manager'), [__CLASS__, 'field_modal_labels'], self::PAGE_SLUG, 'cmp410gone_labels');
 
     add_settings_section('cmp410gone_tracking', __('Tracking & configuration', '410gone-consent-manager'), [__CLASS__, 'section_tracking'], self::PAGE_SLUG);
+    add_settings_field('tracking_mode', __('Tracking mode', '410gone-consent-manager'), [__CLASS__, 'field_tracking_mode'], self::PAGE_SLUG, 'cmp410gone_tracking');
     add_settings_field('gtm_id', __('GTM container ID', '410gone-consent-manager'), [__CLASS__, 'field_gtm_id'], self::PAGE_SLUG, 'cmp410gone_tracking');
+    add_settings_field('ga4_id', __('GA4 measurement ID', '410gone-consent-manager'), [__CLASS__, 'field_ga4_id'], self::PAGE_SLUG, 'cmp410gone_tracking');
     add_settings_field('consent_wait_for_update_ms', __('Consent wait_for_update (ms)', '410gone-consent-manager'), [__CLASS__, 'field_wait'], self::PAGE_SLUG, 'cmp410gone_tracking');
+    add_settings_field('init_datalayer', __('Initialize dataLayer', '410gone-consent-manager'), [__CLASS__, 'field_init_datalayer'], self::PAGE_SLUG, 'cmp410gone_tracking');
     add_settings_section('cmp410gone_advanced', __('Advanced', '410gone-consent-manager'), [__CLASS__, 'section_advanced'], self::PAGE_SLUG);
     add_settings_field('ttl_days', __('Consent retention (days)', '410gone-consent-manager'), [__CLASS__, 'field_ttl_days'], self::PAGE_SLUG, 'cmp410gone_advanced');
     add_settings_field('debug', __('Debug console', '410gone-consent-manager'), [__CLASS__, 'field_debug'], self::PAGE_SLUG, 'cmp410gone_advanced');
@@ -259,6 +265,12 @@ class CMP410GONE_Manager {
     $out['enable'] = isset($in['enable']) ? (int)!!$in['enable'] : $d['enable'];
     $out['debug']  = isset($in['debug']) ? (int)!!$in['debug'] : $d['debug'];
     $out['force_show'] = isset($in['force_show']) ? (int)!!$in['force_show'] : $d['force_show'];
+    $out['init_datalayer'] = isset($in['init_datalayer']) ? (int)!!$in['init_datalayer'] : $d['init_datalayer'];
+    $tracking_mode = isset($in['tracking_mode']) ? sanitize_key((string)$in['tracking_mode']) : $d['tracking_mode'];
+    if (!in_array($tracking_mode, ['all_inclusive', 'gtm', 'hybrid'], true)) {
+      $tracking_mode = $d['tracking_mode'];
+    }
+    $out['tracking_mode'] = $tracking_mode;
     $overlay_mode = isset($in['overlay_mode']) ? sanitize_key((string)$in['overlay_mode']) : $d['overlay_mode'];
     if (!in_array($overlay_mode, ['inline', 'js'], true)) {
       $overlay_mode = $d['overlay_mode'];
@@ -270,6 +282,12 @@ class CMP410GONE_Manager {
       $gtm = '';
     }
     $out['gtm_id'] = $gtm;
+
+    $ga4 = isset($in['ga4_id']) ? strtoupper(trim((string)$in['ga4_id'])) : '';
+    if ($ga4 !== '' && !preg_match('/^G-[A-Z0-9]+$/', $ga4)) {
+      $ga4 = '';
+    }
+    $out['ga4_id'] = $ga4;
 
     $wait = isset($in['consent_wait_for_update_ms']) ? (int)$in['consent_wait_for_update_ms'] : $d['consent_wait_for_update_ms'];
     if ($wait < 0) {
@@ -558,16 +576,44 @@ class CMP410GONE_Manager {
     <label><input type="checkbox" name="<?php echo esc_attr(self::OPTION_KEY); ?>[enable]" value="1" <?php checked(1, (int)$s['enable']); ?> /> <?php esc_html_e('Enable banner display', '410gone-consent-manager'); ?></label>
   <?php }
 
+  public static function field_tracking_mode() {
+    $s = self::get_settings(); ?>
+    <select name="<?php echo esc_attr(self::OPTION_KEY); ?>[tracking_mode]">
+      <option value="all_inclusive" <?php selected($s['tracking_mode'], 'all_inclusive'); ?>><?php esc_html_e('All inclusive', '410gone-consent-manager'); ?></option>
+      <option value="gtm" <?php selected($s['tracking_mode'], 'gtm'); ?>><?php esc_html_e('GTM only', '410gone-consent-manager'); ?></option>
+      <option value="hybrid" <?php selected($s['tracking_mode'], 'hybrid'); ?>><?php esc_html_e('Hybrid', '410gone-consent-manager'); ?></option>
+    </select>
+    <div class="description">
+      <div id="all_inclusive" class="cmp410-tracking-legend"><strong><?php esc_html_e('All inclusive:', '410gone-consent-manager'); ?></strong> <?php esc_html_e('CMP initializes dataLayer and loads GTM/GA4 after consent is read.', '410gone-consent-manager'); ?></div>
+      <div id="gtm" class="cmp410-tracking-legend"><strong><?php esc_html_e('GTM only:', '410gone-consent-manager'); ?></strong> <?php esc_html_e('everything is handled in GTM (including dataLayer).', '410gone-consent-manager'); ?></div>
+      <div id="hybrid" class="cmp410-tracking-legend"><strong><?php esc_html_e('Hybrid:', '410gone-consent-manager'); ?></strong> <?php esc_html_e('CMP initializes dataLayer and loads GTM after consent is read.', '410gone-consent-manager'); ?></div>
+    </div>
+  <?php }
+
   public static function field_gtm_id() {
     $s = self::get_settings(); ?>
     <input type="text" name="<?php echo esc_attr(self::OPTION_KEY); ?>[gtm_id]" value="<?php echo esc_attr($s['gtm_id']); ?>" placeholder="GTM-XXXXXXX" class="regular-text" />
-    <p class="description"><?php esc_html_e('GTM loads early (if provided). In GTM, configure tags to require consent (analytics/ads).', '410gone-consent-manager'); ?></p>
+    <p class="description"><?php esc_html_e('GTM loads early in GTM mode, otherwise it is loaded after consent is read. In GTM, configure tags to require consent (analytics/ads).', '410gone-consent-manager'); ?></p>
+  <?php }
+
+  public static function field_ga4_id() {
+    $s = self::get_settings();
+    $ga4_id = isset($s['ga4_id']) ? (string)$s['ga4_id'] : '';
+    ?>
+    <input type="text" name="<?php echo esc_attr(self::OPTION_KEY); ?>[ga4_id]" value="<?php echo esc_attr($ga4_id); ?>" placeholder="G-XXXXXXXXXX" class="regular-text" />
+    <p class="description"><?php esc_html_e('GA4 configuration tag ID:', '410gone-consent-manager'); ?> <strong><?php echo esc_html($ga4_id); ?></strong></p>
   <?php }
 
   public static function field_wait() {
     $s = self::get_settings(); ?>
     <input type="number" min="0" max="5000" name="<?php echo esc_attr(self::OPTION_KEY); ?>[consent_wait_for_update_ms]" value="<?php echo (int)$s['consent_wait_for_update_ms']; ?>" />
     <p class="description"><?php esc_html_e('Sent to wait_for_update. Typical values: 300–800ms.', '410gone-consent-manager'); ?></p>
+  <?php }
+
+  public static function field_init_datalayer() {
+    $s = self::get_settings(); ?>
+    <label><input type="checkbox" name="<?php echo esc_attr(self::OPTION_KEY); ?>[init_datalayer]" value="1" <?php checked(1, (int)$s['init_datalayer']); ?> /> <?php esc_html_e('Initialize an empty dataLayer in the head.', '410gone-consent-manager'); ?></label>
+    <p class="description"><?php esc_html_e('Leave unchecked to avoid initializing dataLayer to denied (to avoid conflict when having cache strategy with plugin or external like Cloudflare).', '410gone-consent-manager'); ?></p>
   <?php }
 
   public static function field_privacy_url() {
@@ -715,17 +761,61 @@ class CMP410GONE_Manager {
 
   public static function enqueue_head_scripts() {
     $s = self::get_settings();
-    $consent_defaults = self::consent_mode_from_cookie();
-    $consent_defaults['wait_for_update'] = (int)$s['consent_wait_for_update_ms'];
+    $tracking_mode = $s['tracking_mode'] ?? 'hybrid';
+    $init_datalayer = (int)$s['init_datalayer'] && in_array($tracking_mode, ['all_inclusive', 'hybrid'], true);
 
-    wp_register_script('cmp410gone-consent-default', '', [], null, false);
-    $inline = 'window.dataLayer = window.dataLayer || [];' . "\n"
-      . 'function gtag(){dataLayer.push(arguments);}' . "\n"
-      . 'gtag(\'consent\', \'default\', ' . wp_json_encode($consent_defaults) . ');';
-    wp_add_inline_script('cmp410gone-consent-default', $inline);
-    wp_enqueue_script('cmp410gone-consent-default');
+    if ($init_datalayer) {
+      $wait_ms = max(0, min(5000, (int)$s['consent_wait_for_update_ms']));
+      wp_register_script('cmp410gone-consent-default', '', [], null, false);
 
-    if (!(int)$s['enable'] || empty($s['gtm_id'])) {
+      if ($tracking_mode === 'all_inclusive') {
+        $cookie_name = self::COOKIE_NAME;
+        $legacy_cookie = self::LEGACY_COOKIE_NAME;
+        $gtm_id = esc_js($s['gtm_id']);
+        $ga4_id = esc_js($s['ga4_id']);
+        $inline = "(function(){\n"
+          . "window.dataLayer = window.dataLayer || [];\n"
+          . "function gtag(){dataLayer.push(arguments);}\n"
+          . "gtag('consent','default',{\n"
+          . "  analytics_storage:'denied',\n"
+          . "  ad_storage:'denied',\n"
+          . "  ad_user_data:'denied',\n"
+          . "  ad_personalization:'denied',\n"
+          . "  wait_for_update:{$wait_ms}\n"
+          . "});\n"
+          . "function readCmpCookie(){\n"
+          . "  var match=document.cookie.match(/(?:^|;\\s*)(" . preg_quote($cookie_name, '/') . "|" . preg_quote($legacy_cookie, '/') . ")=([^;]+)/);\n"
+          . "  if(!match){return null;}\n"
+          . "  try{return JSON.parse(decodeURIComponent(match[2]));}catch(e){return null;}\n"
+          . "}\n"
+          . "var consent=readCmpCookie();\n"
+          . "if(consent && consent.analytics_storage==='granted'){\n"
+          . "  gtag('consent','update',{\n"
+          . "    analytics_storage:'granted',\n"
+          . "    ad_storage:consent.ad_storage||'denied',\n"
+          . "    ad_user_data:consent.ad_user_data||'denied',\n"
+          . "    ad_personalization:consent.ad_personalization||'denied'\n"
+          . "  });\n"
+          . "  if('{$ga4_id}'){\n"
+          . "    gtag('js', new Date());\n"
+          . "    gtag('config', '{$ga4_id}');\n"
+          . "    var ga=document.createElement('script');ga.async=true;ga.src='https://www.googletagmanager.com/gtag/js?id={$ga4_id}';document.head.appendChild(ga);\n"
+          . "  }\n"
+          . "  window.dataLayer.push({event:'ga4_after_consent'});\n"
+          . "  if('{$gtm_id}'){\n"
+          . "    (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','{$gtm_id}');\n"
+          . "  }\n"
+          . "}\n"
+          . "})();";
+      } else {
+        $inline = 'window.dataLayer = window.dataLayer || [];';
+      }
+
+      wp_add_inline_script('cmp410gone-consent-default', $inline);
+      wp_enqueue_script('cmp410gone-consent-default');
+    }
+
+    if (!(int)$s['enable'] || empty($s['gtm_id']) || $tracking_mode !== 'gtm') {
       return;
     }
 
@@ -779,6 +869,9 @@ class CMP410GONE_Manager {
       'debug' => (bool)$s['debug'],
       'forceShow' => (bool)$s['force_show'],
       'overlayMode' => $s['overlay_mode'],
+      'trackingMode' => $s['tracking_mode'] ?? 'hybrid',
+      'gtmId' => $s['gtm_id'],
+      'ga4Id' => $s['ga4_id'],
     ]);
   }
 

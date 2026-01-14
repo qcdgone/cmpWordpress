@@ -6,6 +6,24 @@
   border-radius: 10px;
 }
 
+.cmp410-tracking-legend {
+  margin-top: 4px;
+}
+
+.cmp410-tracking-legend.is-active {
+  color: green;
+  font-weight: 600;
+}
+
+.cmp410-code {
+  margin: 8px 0 0;
+  padding: 10px 12px;
+  background: #f6f6f6;
+  border-radius: 8px;
+  border: 1px solid #e2e2e2;
+  white-space: pre-wrap;
+}
+
 .cmp410-anchors {
   display: flex;
   flex-wrap: wrap;
