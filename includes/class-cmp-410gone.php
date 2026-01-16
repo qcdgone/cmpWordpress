@@ -775,7 +775,7 @@ class CMP410GONE_Manager {
         $ga4_id = esc_js($s['ga4_id']);
         $inline = "(function(){\n"
           . "window.dataLayer = window.dataLayer || [];\n"
-          . "function gtag(){dataLayer.push(arguments);}\n"
+          . "window.gtag = window.gtag || function(){dataLayer.push(arguments);};\n"
           . "gtag('consent','default',{\n"
           . "  analytics_storage:'denied',\n"
           . "  ad_storage:'denied',\n"
