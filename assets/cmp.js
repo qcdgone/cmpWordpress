@@ -1,4 +1,8 @@
-(function () {
+function initCmp410gone() {
+  if (window.CMP410GONE_INITED) {
+    return;
+  }
+  window.CMP410GONE_INITED = true;
   const CFG = window.CMP410GONE || {};
   const COOKIE_NAME = CFG.cookieName || 'cmp410gone_consent';
   const LEGACY_COOKIE_NAME = CFG.legacyCookieName || 'cmp_consent';
@@ -13,6 +17,7 @@
 
   if (!$wrap) {
     log('wrap not found');
+    window.CMP410GONE_INITED = false;
     return;
   }
 
@@ -301,4 +306,10 @@
   }
 
   log('init ok', { existing, forceShow: force });
-})();
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initCmp410gone);
+} else {
+  initCmp410gone();
+}
